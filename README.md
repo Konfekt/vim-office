@@ -1,9 +1,13 @@
 This Vim plug-in lets Vim read the text of common binary files such as those of type `PDF`, `Word` (`doc(x)`), `Excel` (`xls(x)`), `Powerpoint` (`ppt(x)`), Open Document (`odt`), `zip`...
 
-It depends on appropriate external converters such as `pdftotext`, `odt2txt`, `docx2txt.pl`, `pandoc`, `pptx2md`, ... to do so.
-For an all-in-one solution:
+It depends on appropriate external converters such as `pdftotext`, `odt2txt`, `docx2txt.pl`, `pandoc`, `pptx2md`, ... to do so, but falls back to
 
-1. Download the latest runnable `tika-app-...jar` from the [Apache project](https://tika.apache.org/download.html) to `~/bin/tika.jar` (on Linux) respectively `%USERPROFILE%\bin` (on Microsoft Windows).
+- either [LibreOffice](https://www.libreoffice.org/download/download/) which is an office suite that can handle all those formats listed above, except `PDF`s.
+    To use it on Microsoft Windows, ensure after its installation that its path is added to the `%PATH%` environment variable (say by [Rapidee](http://www.rapidee.com/)).
+- or [Tika](https://tika.apache.org/download.html) which is a content extractor that can handle all those formats listed above and many more.
+    To use it:
+
+1. Download the latest runnable `tika-app-...jar` from [Tika](https://tika.apache.org/download.html) to `~/bin/tika.jar` (on Linux) respectively `%USERPROFILE%\bin` (on Microsoft Windows).
 
 0. Create
 
