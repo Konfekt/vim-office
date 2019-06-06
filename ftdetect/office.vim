@@ -5,8 +5,6 @@ if executable('pdftotext')
   autocmd BufReadPost *.pdf silent exe '%!pdftotext ' . shellescape(expand('%')) . ' -'
 elseif executable('tika')
   autocmd BufReadPost *.pdf silent exe '%!tika --text ' . shellescape(expand('%'))
-elseif executable('unoconv')
-  autocmd BufReadPost *.pdf  call s:unoconv('txt')
 endif
 " }}}
 
@@ -19,6 +17,8 @@ elseif executable('tika')
   autocmd BufReadPost *.odt silent exe '%!tika --text ' . shellescape(expand('%'))
 elseif executable('unoconv')
   autocmd BufReadPost *.odt  call s:unoconv('txt')
+elseif executable('libreoffice')
+  autocmd BufReadPost *.odt silent exe '%!libreoffice --cat ' . shellescape(expand('%'))
 endif
 " }}}
 
@@ -29,6 +29,8 @@ elseif executable('tika')
   autocmd BufReadPost *.rtf silent exe '%!tika --text ' . shellescape(expand('%'))
 elseif executable('unoconv')
   autocmd BufReadPost *.rtf call s:unoconv('txt')
+elseif executable('libreoffice')
+  autocmd BufReadPost *.rtf silent exe '%!libreoffice --cat ' . shellescape(expand('%'))
 endif
 " }}}
 
@@ -37,10 +39,12 @@ if executable('wvText')
   autocmd BufReadPost *.do{c,t} silent exe '%!wvText ' . shellescape(expand('%'))
 elseif executable('tika')
   autocmd BufReadPost *.do{c,t} silent exe '%!tika --text ' . shellescape(expand('%'))
-elseif executable('catdoc')
-  autocmd BufReadPost *.do{c,t} silent exe '%!catdoc ' . shellescape(expand('%'))
 elseif executable('unoconv')
   autocmd BufReadPost *.do{c,t}  call s:unoconv('txt')
+elseif executable('libreoffice')
+  autocmd BufReadPost *.do{c,t} silent exe '%!libreoffice --cat ' . shellescape(expand('%'))
+elseif executable('catdoc')
+  autocmd BufReadPost *.do{c,t} silent exe '%!catdoc ' . shellescape(expand('%'))
 endif
 " }}}
 
@@ -53,6 +57,8 @@ elseif executable('tika')
   autocmd BufReadPost *.do{c,t}{m,x} silent exe '%!tika --text ' . shellescape(expand('%'))
 elseif executable('unoconv')
   autocmd BufReadPost *.do{c,t}{m,x} call s:unoconv('txt')
+elseif executable('libreoffice')
+  autocmd BufReadPost *.do{c,t}{m,x} silent exe '%!libreoffice --cat ' . shellescape(expand('%'))
 endif
 " }}}
 
@@ -63,14 +69,20 @@ if executable('tika')
         \ if exists(':EasyAlign') | exe '%EasyAlign */\t\+/' | endif |
         \ setlocal nowrap
 elseif executable('xls2csv')
-  autocmd BufReadPost 
-        \ *.xls silent silent exe '%!xls2csv ' . shellescape(expand('%'))|
+  autocmd BufReadPost *.xls
+        \ silent silent exe '%!xls2csv ' . shellescape(expand('%'))|
         \ if exists(':EasyAlign') | exe '%EasyAlign */,/' | endif |
         \ setlocal nowrap nowrap filetype=csv
 elseif executable('unoconv')
   autocmd BufReadPost *.xls
         \ call s:unoconv('csv') |
+        \ if exists(':EasyAlign') | exe '%EasyAlign */,/' | endif |
         \ setlocal nowrap filetype=csv
+elseif executable('libreoffice')
+  autocmd BufReadPost *.xls
+        \ silent exe '%!libreoffice --convert-to csv ' . shellescape(expand('%'))
+        \ if exists(':EasyAlign') | exe '%EasyAlign */,/' | endif |
+        \ setlocal nowrap nowrap filetype=csv
 endif
 " }}}
 
@@ -93,17 +105,25 @@ elseif executable('tika')
 elseif executable('unoconv')
   autocmd BufReadPost *.xls{x,m,b}
         \ call s:unoconv('csv') |
+        \ if exists(':EasyAlign') | exe '%EasyAlign */,/' | endif |
         \ setlocal nowrap setlocal filetype=csv
+elseif executable('libreoffice')
+  autocmd BufReadPost *.xls{x,m,b}
+        \ silent exe '%!libreoffice --convert-to csv ' . shellescape(expand('%'))
+        \ if exists(':EasyAlign') | exe '%EasyAlign */,/' | endif |
+      \ setlocal nowrap nowrap filetype=csv
 endif
 " }}}
 
 " {{{ PPT
 if executable('tika')
   autocmd BufReadPost *.ppt silent exe '%!tika --text ' . shellescape(expand('%'))
-elseif executable('catppt')
-  autocmd BufReadPost *.ppt silent exe '%!catppt ' . shellescape(expand('%'))
 elseif executable('unoconv')
   autocmd BufReadPost *.ppt call s:unoconv('txt')
+elseif executable('libreoffice')
+  autocmd BufReadPost *.ppt silent exe '%!libreoffice --cat ' . shellescape(expand('%'))
+elseif executable('catppt')
+  autocmd BufReadPost *.ppt silent exe '%!catppt ' . shellescape(expand('%'))
 endif
 " }}}
 
@@ -116,6 +136,8 @@ elseif executable('tika')
   autocmd BufReadPost *.ppt{x,m} silent exe '%!tika --text ' . shellescape(expand('%'))
 elseif executable('unoconv')
   autocmd BufReadPost *.ppt{x,m} call s:unoconv('txt')
+elseif executable('libreoffice')
+  autocmd BufReadPost *.ppt{x,m} silent exe '%!libreoffice --cat ' . shellescape(expand('%'))
 endif
 " }}}
 
