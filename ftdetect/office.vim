@@ -8,6 +8,11 @@ elseif executable('lynx')
   let  s:browser = 'lynx -dump -stdin'
 endif
 
+" Remove extensions jar?|epub|doc[xm]|xls[xmb]|pp[st][xm] from g:zipPlugin_ext
+" from Sep 13, 2016 and afterwards add back whenever converter unavailable
+" NOTE: adding back might happen too late for zipPlugin to be aware of it!
+let g:zipPlugin_ext='*.apk,*.celzip,*.crtx,*.ear,*.gcsx,*.glox,*.gqsx,*.kmz,*.oxt,*.potm,*.potx,*.ppam,*.sldx,*.thmx,*.vdw,*.war,*.wsz,*.xap,*.xlam,*.xlam,*.xltm,*.xltx,*.xpi,*.zip'
+
 " {{{ PDF
 autocmd BufReadPost *.pdf call s:pdf()
 fun s:pdf()
@@ -77,7 +82,7 @@ fun s:doc()
   if executable('wvText')
     silent exe '%!wvText ' . shellescape(expand('%'))
   elseif executable('wvHtml') && exists('s:browser')
-    silent exe '%!wvText ' . shellescape(expand('%')) | . ' | ' . s:browser
+    silent exe '%!wvText ' . shellescape(expand('%')) . ' | ' . s:browser
   elseif executable('tika')
     silent exe '%!tika --encoding=UTF-8 --detect --text -'
     setlocal fileencoding=utf-8
@@ -106,6 +111,12 @@ fun s:docx()
     setlocal fileencoding=utf-8
   elseif executable('libreoffice')
     silent exe '%!libreoffice --cat ' . shellescape(expand('%'))
+  else
+    let exts = '*.docx,*.docm,*.dotx,*.dotm'
+    let g:zipPlugin_ext .= ',' .  exts
+    if exists('#zip')
+      exe 'au zip BufReadCmd ' . exts . ' call zip#Browse(expand("<amatch>"))'
+    endif
   endif
   setlocal nomodifiable readonly
   setlocal filetype=text
@@ -166,6 +177,12 @@ fun s:xlsx()
     setlocal fileencoding=utf-8
     if exists(':EasyAlign') | exe '%EasyAlign */\t\+/' | endif
     setlocal filetype=text
+  else
+    let exts = '*.xlsx,*.xlsm,*.xlsb'
+    let g:zipPlugin_ext .= ',' .  exts
+    if exists('#zip')
+      exe 'au zip BufReadCmd ' . exts . ' call zip#Browse(expand("<amatch>"))'
+    endif
   endif
   setlocal nowrap
   setlocal nomodifiable readonly
@@ -176,7 +193,7 @@ endf
 autocmd BufReadPost *.pp{s,t} call s:ppt()
 fun s:ppt()
   if executable('tika') && exist('s:browser') 
-    silent exe '%!tika --encoding=UTF-8 --detect --html -' . ' ' . s:browser
+    silent exe '%!tika --encoding=UTF-8 --detect --html -' . ' | ' . s:browser
     setlocal fileencoding=utf-8
   elseif executable('tika')
     silent exe '%!tika --encoding=UTF-8 --detect --text -'
@@ -201,7 +218,7 @@ fun s:pptx()
     silent exe '%!pptx2md --disable_image --disable_wmf ' . shellescape(expand('%')) . ' -o ' . output_file . ' >/dev/null && cat ' output_file
     setlocal filetype=markdown foldmethod=expr foldexpr=MarkdownFold()
   elseif executable('tika') && exist('s:browser') 
-    silent exe '%!tika --encoding=UTF-8 --detect --html -' . ' ' . s:browser
+    silent exe '%!tika --encoding=UTF-8 --detect --html -' . ' | ' . s:browser
     setlocal fileencoding=utf-8
     setlocal filetype=text
   elseif executable('tika')
@@ -213,6 +230,12 @@ fun s:pptx()
   elseif executable('libreoffice')
     silent exe '%!libreoffice --cat ' . shellescape(expand('%'))
     setlocal filetype=text
+  else
+    let exts = '*.pptx,*.pptm,*.ppsx,*.ppsm'
+    let g:zipPlugin_ext .= ',' .  exts
+    if exists('#zip')
+      exe 'au zip BufReadCmd ' . exts . ' call zip#Browse(expand("<amatch>"))'
+    endif
   endif
   setlocal nomodifiable readonly
 endf
@@ -224,6 +247,12 @@ if executable('tika')
         \ silent exe '%!tika --encoding=UTF-8 --detect --text -' |
         \ setlocal fileencoding=utf-8 |
         \ setlocal filetype=text nomodifiable readonly 
+else
+  let exts = '*.ja,*.jar,*.epub'
+  let g:zipPlugin_ext .= ',' .  exts
+  if exists('#zip')
+    exe 'au zip BufReadCmd ' . exts . ' call zip#Browse(expand("<amatch>"))'
+  endif
 endif
 " }}}
 
