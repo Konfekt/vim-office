@@ -1,4 +1,5 @@
-This plug-in lets Vim read documents of type `PDF`, `Word` (`doc(x)`), `Excel` (`xls(x)`), `Powerpoint` (`ppt(x)`), Open Document (`odt`), ... via `LibreOffice`, `Tika` or specific converters.
+This plug-in enables Vim to read text documents of type `PDF`, Microsoft Office such as `Word` (`doc(x)`), `Excel` (`xls(x)`) or `Powerpoint` (`ppt(x)`), LibreOffice (`odt`), `EPUB` ....
+To go even further, for example, among many others file formats, read media files in Vim, add this [Vim script code snippet](https://github.com/wofr06/lesspipe/wiki/snippet-to-read-unrecognized-files-through-lesspipe-in-Vim) for [lesspipe.sh](https://github.com/wofr06/lesspipe/) to your `vimrc`!
 
 It uses, whenever available, appropriate external converters such as `pdftotext`, `odt2txt`, `docx2txt.pl`, `pandoc`, `pptx2md`, ... to do so, but falls back to:
 

@@ -2,17 +2,18 @@
 
 ===========================================================================
 
-This plug-in lets Vim read documents of type PDF, Word (doc(x)), Excel
-(xls(x)), Powerpoint (ppt(x)), Open Document (odt), ..., via LibreOffice, Tika or specific
-  converters
+This plug-in enables Vim to read text documents of type PDF, Microsoft Office
+such as Word (doc(x)), Excel (xls(x)) or Powerpoint (ppt(x)), LibreOffice
+(odt), EPUB .... To go even further, for example, among many others file
+formats, read media files in Vim, see the Wiki of lesspipe.sh!
 
-It uses, whenever available, appropriate external converters such as pdftotext, odt2txt,
-docx2txt.pl, pandoc, pptx2md, ... to do so, but falls back to:
+It uses, whenever available, appropriate external converters such as pdftotext,
+odt2txt, docx2txt.pl, pandoc, pptx2md, ... to do so, but falls back to:
 
-- Either LibreOffice which is an office suite that can handle all those formats listed
-  above, except PDFs.
-  (To use it on Microsoft Windows, ensure after its installation that its path
-  is added to the %PATH% environment variable, say by Rapidee.)
+- Either LibreOffice which is an office suite that can handle all those formats
+  listed above, except PDFs. (To use it on Microsoft Windows, ensure after its
+  installation that its path is added to the %PATH% environment variable,
+  say by Rapidee.)
 
 - Or Tika which is a content extractor that can handle all those formats listed
   above and many more. To use it:
@@ -37,7 +38,8 @@ docx2txt.pl, pandoc, pptx2md, ... to do so, but falls back to:
           java -jar "%USERPROFILE%\bin\tika.jar" %*
 
 
-  3. Add the folder of the newly created tika executable to your environment variable $PATH (on Linux) respectively %PATH% (on Microsoft Windows):
+  3. Add the folder of the newly created tika executable to your environment
+     variable $PATH (on Linux) respectively %PATH% (on Microsoft Windows):
 
       - on Linux, if you use bash or zsh by adding to ~/.profile or ~/.zshenv
         the line
