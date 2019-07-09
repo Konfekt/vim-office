@@ -37,6 +37,42 @@ fun s:pdf()
 endf
 " }}}
 
+" {{{ EPUB
+autocmd BufReadPost *.epub call s:epub()
+fun s:epub()
+  if executable('pandoc')
+    silent exe '%!pandoc --from=epub --to=plain ' . shellescape(expand('%'))
+    setlocal fileencoding=utf-8
+  elseif executable('tika')
+    silent exe '%!tika --encoding=UTF-8 --detect --text -'
+    setlocal fileencoding=utf-8
+  endif
+  setlocal nomodifiable readonly
+  setlocal filetype=text
+  let exts = '*.epub'
+  let g:zipPlugin_ext .= ',' .  exts
+  if exists('#zip')
+    exe 'au zip BufReadCmd ' . exts . ' call zip#Browse(expand("<amatch>"))'
+  endif
+endf
+" }}}
+
+" {{{ RTF
+autocmd BufReadPost *.rtf call s:rtf()
+fun s:rtf()
+  if executable('unrtf')
+    silent %!unrtf -P /etc/unrtf --text
+  elseif executable('tika')
+    silent exe '%!tika --encoding=UTF-8 --detect --text -'
+    setlocal fileencoding=utf-8
+  elseif executable('libreoffice')
+    silent exe '%!libreoffice --cat ' . shellescape(expand('%'))
+  endif
+  setlocal nomodifiable readonly
+  setlocal filetype=text
+endf
+" }}}
+
 " {{{ ODT
 autocmd BufReadPost *.odt call s:odt()
 fun s:odt()
@@ -49,22 +85,6 @@ fun s:odt()
   elseif executable('pandoc')
     silent exe '%!pandoc --from=odt --to=plain ' . shellescape(expand('%'))
     setlocal fileencoding=utf-8
-  elseif executable('tika')
-    silent exe '%!tika --encoding=UTF-8 --detect --text -'
-    setlocal fileencoding=utf-8
-  elseif executable('libreoffice')
-    silent exe '%!libreoffice --cat ' . shellescape(expand('%'))
-  endif
-  setlocal nomodifiable readonly
-  setlocal filetype=text
-endf
-" }}}
-
-" {{{ RTF
-autocmd BufReadPost *.rtf call s:rtf()
-fun s:rtf()
-  if executable('unrtf')
-    silent %!unrtf -P /etc/unrtf --text
   elseif executable('tika')
     silent exe '%!tika --encoding=UTF-8 --detect --text -'
     setlocal fileencoding=utf-8
@@ -243,12 +263,12 @@ endf
 
 " {{{ OTHER FILE TYPES
 if executable('tika')
-  autocmd BufReadPost *.{{rar,7z},{class,ja,jar},{epub,chm},{mdb,accdb},{pst,msg},mht{,ml}}
+  autocmd BufReadPost *.{{rar,7z},{class,ja,jar},chm,{mdb,accdb},{pst,msg},mht{,ml}}
         \ silent exe '%!tika --encoding=UTF-8 --detect --text -' |
         \ setlocal fileencoding=utf-8 |
         \ setlocal filetype=text nomodifiable readonly 
 else
-  let exts = '*.ja,*.jar,*.epub'
+  let exts = '*.ja,*.jar'
   let g:zipPlugin_ext .= ',' .  exts
   if exists('#zip')
     exe 'au zip BufReadCmd ' . exts . ' call zip#Browse(expand("<amatch>"))'
