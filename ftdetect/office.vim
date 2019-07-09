@@ -51,7 +51,7 @@ fun s:epub()
   setlocal filetype=text
   let exts = '*.epub'
   let g:zipPlugin_ext .= ',' .  exts
-  if exists('#zip')
+  if exists('#zip') && !exists('#zip#BufReadCmd#' . exts)
     exe 'au zip BufReadCmd ' . exts . ' call zip#Browse(expand("<amatch>"))'
   endif
 endf
@@ -134,7 +134,7 @@ fun s:docx()
   else
     let exts = '*.docx,*.docm,*.dotx,*.dotm'
     let g:zipPlugin_ext .= ',' .  exts
-    if exists('#zip')
+    if exists('#zip') && !exists('#zip#BufReadCmd#' . exts)
       exe 'au zip BufReadCmd ' . exts . ' call zip#Browse(expand("<amatch>"))'
     endif
   endif
@@ -200,7 +200,7 @@ fun s:xlsx()
   else
     let exts = '*.xlsx,*.xlsm,*.xlsb'
     let g:zipPlugin_ext .= ',' .  exts
-    if exists('#zip')
+    if exists('#zip') && !exists('#zip#BufReadCmd#' . exts)
       exe 'au zip BufReadCmd ' . exts . ' call zip#Browse(expand("<amatch>"))'
     endif
   endif
@@ -253,7 +253,7 @@ fun s:pptx()
   else
     let exts = '*.pptx,*.pptm,*.ppsx,*.ppsm'
     let g:zipPlugin_ext .= ',' .  exts
-    if exists('#zip')
+    if exists('#zip') && !exists('#zip#BufReadCmd#' . exts)
       exe 'au zip BufReadCmd ' . exts . ' call zip#Browse(expand("<amatch>"))'
     endif
   endif
@@ -270,7 +270,7 @@ if executable('tika')
 else
   let exts = '*.ja,*.jar'
   let g:zipPlugin_ext .= ',' .  exts
-  if exists('#zip')
+  if exists('#zip') && !exists('#zip#BufReadCmd#' . exts)
     exe 'au zip BufReadCmd ' . exts . ' call zip#Browse(expand("<amatch>"))'
   endif
 endif
