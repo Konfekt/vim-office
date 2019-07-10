@@ -53,6 +53,7 @@ fun s:epub()
   let g:zipPlugin_ext .= ',' .  exts
   if exists('#zip') && !exists('#zip#BufReadCmd#' . exts)
     exe 'au zip BufReadCmd ' . exts . ' call zip#Browse(expand("<amatch>"))'
+    doautocmd zip BufReadCmd
   endif
 endf
 " }}}
@@ -136,6 +137,7 @@ fun s:docx()
     let g:zipPlugin_ext .= ',' .  exts
     if exists('#zip') && !exists('#zip#BufReadCmd#' . exts)
       exe 'au zip BufReadCmd ' . exts . ' call zip#Browse(expand("<amatch>"))'
+      doautocmd zip BufReadCmd
     endif
   endif
   setlocal nomodifiable readonly
@@ -202,6 +204,7 @@ fun s:xlsx()
     let g:zipPlugin_ext .= ',' .  exts
     if exists('#zip') && !exists('#zip#BufReadCmd#' . exts)
       exe 'au zip BufReadCmd ' . exts . ' call zip#Browse(expand("<amatch>"))'
+      doautocmd zip BufReadCmd
     endif
   endif
   setlocal nowrap
@@ -255,6 +258,7 @@ fun s:pptx()
     let g:zipPlugin_ext .= ',' .  exts
     if exists('#zip') && !exists('#zip#BufReadCmd#' . exts)
       exe 'au zip BufReadCmd ' . exts . ' call zip#Browse(expand("<amatch>"))'
+      doautocmd zip BufReadCmd
     endif
   endif
   setlocal nomodifiable readonly
@@ -272,6 +276,7 @@ else
   let g:zipPlugin_ext .= ',' .  exts
   if exists('#zip') && !exists('#zip#BufReadCmd#' . exts)
     exe 'au zip BufReadCmd ' . exts . ' call zip#Browse(expand("<amatch>"))'
+    doautocmd zip BufReadCmd
   endif
 endif
 " }}}
