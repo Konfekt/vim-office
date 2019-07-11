@@ -6,7 +6,7 @@ For the text extraction, it depends on external tools, but most use cases are co
   - `LibreOffice` and a common text browser (such as `lynx`), and
   - `pdftotext`.
 
-It prefers, whenever available, appropriate external converters such as `pandoc`, `odt2txt`, `docx2txt.pl`, `pptx2md`, ... to do so, but will fall back to:
+It prefers, whenever available, appropriate external converters such as [unrtf](http://ftp.gnu.org/gnu/unrtf/), [pandoc](http://pandoc.org), [docx2txt.pl](https://github.com/arthursucks/docx2txt), [odt2txt](https://github.com/dstosberg/odt2txt), [git-xlsx-textconv](https://github.com/tokuhirom/git-xlsx-textconv), [git-xlsx-textconv.pl](https://github.com/yappo/p5-git-xlsx-textconv.pl) or [pptx2md](https://github.com/ssine/pptx2md) ... to do so, but will fall back to:
 
 - Either [LibreOffice](https://www.libreoffice.org/download/download/) which is an office suite that (together with a common text browser such as `lynx`) can handle all those formats listed above, except `PDF`s.
     (To use it on Microsoft Windows, ensure after its installation that its path is added to the `%PATH%` environment variable, say by [Rapidee](http://www.rapidee.com/).)
