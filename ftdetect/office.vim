@@ -17,19 +17,19 @@ let g:zipPlugin_ext='*.apk,*.celzip,*.crtx,*.ear,*.gcsx,*.glox,*.gqsx,*.kmz,*.ox
 autocmd BufReadPost *.pdf call s:pdf()
 fun s:pdf()
   if executable('pdftotext') && exists('s:browser')
-    silent exe '%!pdftotext -htmlmeta -enc UTF-8 ' . shellescape(expand('%')) . ' -' . ' | ' . s:browser
+    silent exe '%!pdftotext -htmlmeta -enc UTF-8 ' . expand('%:p:S') . ' -' . ' | ' . s:browser
     setlocal fileencoding=utf-8
   elseif executable('pdftotext')
-    silent exe '%!pdftotext -enc UTF-8 ' . shellescape(expand('%')) . ' -'
+    silent %!pdftotext -enc UTF-8 %:p:S -
     setlocal fileencoding=utf-8
   elseif executable('pdftohtml') && exists('s:browser')
-    silent exe '%!pdftohtml -i -noframes -nodrm -enc UTF-8 -stdout ' . shellescape(expand('%')) . ' | ' . s:browser
+    silent exe '%!pdftohtml -i -noframes -nodrm -enc UTF-8 -stdout ' . expand('%:p:S') . ' | ' . s:browser
     setlocal fileencoding=utf-8
   elseif executable('tika') && exists('s:browser')
-    silent exe '%!tika --encoding=UTF-8 --detect --html' . shellescape(expand('%')) . ' | ' . s:browser
+    silent exe '%!tika --encoding=UTF-8 --detect --html' . expand('%:p:S') . ' | ' . s:browser
     setlocal fileencoding=utf-8
   elseif executable('tika')
-    silent exe '%!tika --encoding=UTF-8 --detect --text -'
+    silent %!tika --encoding=UTF-8 --detect --text -
     setlocal fileencoding=utf-8
   endif
   setlocal nomodifiable readonly
@@ -41,10 +41,10 @@ endf
 autocmd BufReadPost *.epub call s:epub()
 fun s:epub()
   if executable('pandoc')
-    silent exe '%!pandoc --from=epub --to=plain ' . shellescape(expand('%'))
+    silent %!pandoc --from=epub --to=plain %:p:S
     setlocal fileencoding=utf-8
   elseif executable('tika')
-    silent exe '%!tika --encoding=UTF-8 --detect --text -'
+    silent %!tika --encoding=UTF-8 --detect --text -
     setlocal fileencoding=utf-8
   endif
   setlocal nomodifiable readonly
@@ -64,10 +64,10 @@ fun s:rtf()
   if executable('unrtf')
     silent %!unrtf -P /etc/unrtf --text
   elseif executable('tika')
-    silent exe '%!tika --encoding=UTF-8 --detect --text -'
+    silent %!tika --encoding=UTF-8 --detect --text -
     setlocal fileencoding=utf-8
   elseif executable('libreoffice')
-    silent exe '%!libreoffice --cat ' . shellescape(expand('%'))
+    silent %!libreoffice --cat %:p:S
   endif
   setlocal nomodifiable readonly
   setlocal filetype=text
@@ -78,19 +78,19 @@ endf
 autocmd BufReadPost *.odt call s:odt()
 fun s:odt()
   if executable('odt2txt')
-    silent exe '%!odt2txt --encoding=UTF-8 ' . shellescape(expand('%'))
+    silent %!odt2txt --encoding=UTF-8 %:p:S
     setlocal fileencoding=utf-8
   elseif executable('odt2html') && exists('s:browser')
-    silent exe '%!odt2txt --encoding=UTF-8 ' . shellescape(expand('%')) . ' | ' . s:browser
+    silent exe '%!odt2txt --encoding=UTF-8 ' . expand('%:p:S') . ' | ' . s:browser
     setlocal fileencoding=utf-8
   elseif executable('pandoc')
-    silent exe '%!pandoc --from=odt --to=plain ' . shellescape(expand('%'))
+    silent %!pandoc --from=odt --to=plain %:p:S
     setlocal fileencoding=utf-8
   elseif executable('tika')
-    silent exe '%!tika --encoding=UTF-8 --detect --text -'
+    silent %!tika --encoding=UTF-8 --detect --text -
     setlocal fileencoding=utf-8
   elseif executable('libreoffice')
-    silent exe '%!libreoffice --cat ' . shellescape(expand('%'))
+    silent %!libreoffice --cat %:p:S
   endif
   setlocal nomodifiable readonly
   setlocal filetype=text
@@ -101,18 +101,18 @@ endf
 autocmd BufReadPost *.do{c,t} call s:doc()
 fun s:doc()
   if executable('wvText')
-    silent exe '%!wvText ' . shellescape(expand('%'))
+    silent %!wvText %:p:S
   elseif executable('wvHtml') && exists('s:browser')
-    silent exe '%!wvText ' . shellescape(expand('%')) . ' | ' . s:browser
+    silent exe '%!wvText ' . expand('%:p:S') . ' | ' . s:browser
   elseif executable('tika')
-    silent exe '%!tika --encoding=UTF-8 --detect --text -'
+    silent %!tika --encoding=UTF-8 --detect --text -'
     setlocal fileencoding=utf-8
   elseif executable('libreoffice')
-    silent exe '%!libreoffice --cat ' . shellescape(expand('%'))
+    silent %!libreoffice --cat %:p:S
   elseif executable('catdoc')
-    silent exe '%!catdoc ' . shellescape(expand('%'))
+    silent %!catdoc %:p:S
   elseif executable('antiword')
-    silent exe '%!antiword ' . shellescape(expand('%'))
+    silent %!antiword %:p:S
   endif
   setlocal nomodifiable readonly
   setlocal filetype=text
@@ -123,15 +123,15 @@ endf
 autocmd BufReadPost *.do{c,t}{m,x} call s:docx()
 fun s:docx()
   if executable('pandoc')
-    silent exe '%!pandoc --from=docx --to=plain ' . shellescape(expand('%'))
+    silent %!pandoc --from=docx --to=plain %:p:S
     setlocal fileencoding=utf-8
   elseif executable('docx2txt.pl')
-    silent exe '%!docx2txt.pl -'
+    silent %!docx2txt.pl -'
   elseif executable('tika')
-    silent exe '%!tika --encoding=UTF-8 --detect --text -'
+    silent %!tika --encoding=UTF-8 --detect --text -
     setlocal fileencoding=utf-8
   elseif executable('libreoffice')
-    silent exe '%!libreoffice --cat ' . shellescape(expand('%'))
+    silent %!libreoffice --cat %:p:S
   else
     let exts = '*.docx,*.docm,*.dotx,*.dotm'
     let g:zipPlugin_ext .= ',' .  exts
@@ -149,22 +149,22 @@ endf
 autocmd BufReadPost *.xl{m,s,t} call s:xsl()
 fun s:xsl()
   if executable('xlhtml') && exists('s:browser')
-    silent silent exe '%!xlhtml ' . shellescape(expand('%')) . ' | ' . s:browser
+    silent silent exe '%!xlhtml ' . expand('%:p:S') . ' | ' . s:browser
   elseif executable('xls2csv')
-    silent silent exe '%!xls2csv ' . shellescape(expand('%'))|
+    silent %!xls2csv %:p:S
     if exists(':EasyAlign') | exe '%EasyAlign */,/' | endif
     setlocal filetype=csv
   elseif executable('libreoffice') && exist('s:browser')
-    silent exe '%!libreoffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . shellescape(expand('%')) . ' >/dev/null && cat ' . s:tmpdir . '/' . expand('%:t:r') . '.html' 
+    silent exe '%!libreoffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' >/dev/null && cat ' . s:tmpdir . '/' . expand('%:t:r') . '.html' 
   elseif executable('libreoffice')
-    silent exe '%!libreoffice --headless --convert-to csv --outdir ' s:tmpdir . ' ' . shellescape(expand('%')) . ' >/dev/null && cat ' . s:tmpdir . '/' . expand('%:t:r') . '.csv' 
+    silent exe '%!libreoffice --headless --convert-to csv --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' >/dev/null && cat ' . s:tmpdir . '/' . expand('%:t:r') . '.csv' 
     if exists(':EasyAlign') | exe '%EasyAlign */,/' | endif
     setlocal filetype=csv
   elseif executable('tika') && exists('s:browser')
-    silent exe '%!tika --encoding=UTF-8 --detect --html ' . shellescape(expand('%')) . ' | ' . s:browser
+    silent exe '%!tika --encoding=UTF-8 --detect --html ' . expand('%:p:S') . ' | ' . s:browser
     setlocal fileencoding=utf-8
   elseif executable('tika')
-    silent exe '%!tika --encoding=UTF-8 --detect --text -'
+    silent %!tika --encoding=UTF-8 --detect --text -
     setlocal fileencoding=utf-8
     if exists(':EasyAlign') | exe '%EasyAlign */\t\+/' | endif
   endif
@@ -177,25 +177,25 @@ endf
 autocmd BufReadPost *.xl{s,t}{x,m,b} call s:xlsx()
 fun s:xlsx()
   if executable('git-xlsx-textconv.pl')
-    silent silent exe '%!git-xlsx-textconv.pl ' . shellescape(expand('%'))|
+    silent %!git-xlsx-textconv.pl %:p:S
     if exists(':EasyAlign') | exe '%EasyAlign */\t\+/' | endif 
     setlocal filetype=text
   elseif executable('git-xlsx-textconv')
-    silent silent exe '%!git-xlsx-textconv ' . shellescape(expand('%'))|
+    silent %!git-xlsx-textconv %:p:S
     if exists(':EasyAlign') | exe '%EasyAlign */\t\+/' | endif
     setlocal filetype=text
   elseif executable('tika') && exist('s:browser')
-    silent exe '%!tika --encoding=UTF-8 --detect --html ' . shellescape(expand('%')) . ' | ' . s:browser
+    silent exe '%!tika --encoding=UTF-8 --detect --html ' . expand('%:p:S') . ' | ' . s:browser
     setlocal fileencoding=utf-8
     if exists(':EasyAlign') | exe '%EasyAlign */\t\+/' | endif
   elseif executable('libreoffice') && exist('s:browser')
-    silent exe '%!libreoffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . shellescape(expand('%')) . ' >/dev/null && cat ' . s:tmpdir . '/' . expand('%:t:r') . '.html' . ' | ' . s:browser
+    silent exe '%!libreoffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' >/dev/null && cat ' . s:tmpdir . '/' . expand('%:t:r') . '.html' . ' | ' . s:browser
   elseif executable('libreoffice')
-    silent exe '%!libreoffice --headless --convert-to csv --outdir ' s:tmpdir . ' ' . shellescape(expand('%')) . ' >/dev/null && cat ' . s:tmpdir . '/' . expand('%:t:r') . '.csv'
+    silent exe '%!libreoffice --headless --convert-to csv --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' >/dev/null && cat ' . s:tmpdir . '/' . expand('%:t:r') . '.csv'
     if exists(':EasyAlign') | exe '%EasyAlign */,/' | endif
     setlocal filetype=csv
   elseif executable('tika')
-    silent exe '%!tika --encoding=UTF-8 --detect --text -'
+    silent %!tika --encoding=UTF-8 --detect --text -'
     setlocal fileencoding=utf-8
     if exists(':EasyAlign') | exe '%EasyAlign */\t\+/' | endif
     setlocal filetype=text
@@ -219,14 +219,14 @@ fun s:ppt()
     silent exe '%!tika --encoding=UTF-8 --detect --html -' . ' | ' . s:browser
     setlocal fileencoding=utf-8
   elseif executable('tika')
-    silent exe '%!tika --encoding=UTF-8 --detect --text -'
+    silent %!tika --encoding=UTF-8 --detect --text -
     setlocal fileencoding=utf-8
   elseif executable('libreoffice') && exist('s:browser')
-    silent exe '%!libreoffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . shellescape(expand('%')) . ' >/dev/null && cat ' . s:tmpdir . '/' . expand('%:t:r') . '.html' . ' | ' . s:browser
+    silent exe '%!libreoffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' >/dev/null && cat ' . s:tmpdir . '/' . expand('%:t:r') . '.html' . ' | ' . s:browser
   elseif executable('libreoffice')
-    silent exe '%!libreoffice --cat ' . shellescape(expand('%'))
+    silent %!libreoffice --cat %:p:S
   elseif executable('catppt')
-    silent exe '%!catppt ' . shellescape(expand('%'))
+    silent %!catppt %:p:S
   endif
   setlocal nomodifiable readonly
   setlocal filetype=text
@@ -238,7 +238,7 @@ autocmd BufReadPost *.pp{s,t}{x,m} call s:pptx()
 fun s:pptx()
   if executable('pptx2md')
     let output_file = s:tmpdir . '/' . expand('%:t:r') . '.md'
-    silent exe '%!pptx2md --disable_image --disable_wmf ' . shellescape(expand('%')) . ' -o ' . output_file . ' >/dev/null && cat ' output_file
+    silent exe '%!pptx2md --disable_image --disable_wmf ' . expand('%:p:S') . ' -o ' . output_file . ' >/dev/null && cat ' output_file
     setlocal filetype=markdown foldmethod=expr foldexpr=MarkdownFold()
   elseif executable('tika') && exist('s:browser') 
     silent exe '%!tika --encoding=UTF-8 --detect --html -' . ' | ' . s:browser
@@ -249,9 +249,9 @@ fun s:pptx()
     setlocal fileencoding=utf-8
     setlocal filetype=text
   elseif executable('libreoffice') && exist('s:browser')
-    silent exe '%!libreoffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . shellescape(expand('%')) . ' >/dev/null && cat ' . s:tmpdir . '/' . expand('%:t:r') . '.html' . ' | ' . s:browser
+    silent exe '%!libreoffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' >/dev/null && cat ' . s:tmpdir . '/' . expand('%:t:r') . '.html' . ' | ' . s:browser
   elseif executable('libreoffice')
-    silent exe '%!libreoffice --cat ' . shellescape(expand('%'))
+    silent %!libreoffice --cat %:p:S
     setlocal filetype=text
   else
     let exts = '*.pptx,*.pptm,*.ppsx,*.ppsm'
