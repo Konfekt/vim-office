@@ -152,13 +152,13 @@ fun s:xsl()
     silent silent exe '%!xlhtml ' . expand('%:p:S') . ' | ' . s:browser
   elseif executable('xls2csv')
     silent %!xls2csv %:p:S
-    if exists(':EasyAlign') | exe '%EasyAlign */,/' | endif
+    if exists(':EasyAlign') == 2 | exe '%EasyAlign */,/' | endif
     setlocal filetype=csv
   elseif executable('libreoffice') && exist('s:browser')
     silent exe '%!libreoffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' >/dev/null && cat ' . s:tmpdir . '/' . expand('%:t:r') . '.html' 
   elseif executable('libreoffice')
     silent exe '%!libreoffice --headless --convert-to csv --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' >/dev/null && cat ' . s:tmpdir . '/' . expand('%:t:r') . '.csv' 
-    if exists(':EasyAlign') | exe '%EasyAlign */,/' | endif
+    if exists(':EasyAlign') == 2 | exe '%EasyAlign */,/' | endif
     setlocal filetype=csv
   elseif executable('tika') && exists('s:browser')
     silent exe '%!tika --encoding=UTF-8 --detect --html ' . expand('%:p:S') . ' | ' . s:browser
@@ -166,7 +166,7 @@ fun s:xsl()
   elseif executable('tika')
     silent %!tika --encoding=UTF-8 --detect --text -
     setlocal fileencoding=utf-8
-    if exists(':EasyAlign') | exe '%EasyAlign */\t\+/' | endif
+    if exists(':EasyAlign') == 2 | exe '%EasyAlign */\t\+/' | endif
   endif
   setlocal nowrap
   setlocal nomodifiable readonly
@@ -178,26 +178,26 @@ autocmd BufReadPost *.xl{s,t}{x,m,b} call s:xlsx()
 fun s:xlsx()
   if executable('git-xlsx-textconv.pl')
     silent %!git-xlsx-textconv.pl %:p:S
-    if exists(':EasyAlign') | exe '%EasyAlign */\t\+/' | endif 
+    if exists(':EasyAlign') == 2 | exe '%EasyAlign */\t\+/' | endif 
     setlocal filetype=text
   elseif executable('git-xlsx-textconv')
     silent %!git-xlsx-textconv %:p:S
-    if exists(':EasyAlign') | exe '%EasyAlign */\t\+/' | endif
+    if exists(':EasyAlign') == 2 | exe '%EasyAlign */\t\+/' | endif
     setlocal filetype=text
   elseif executable('tika') && exist('s:browser')
     silent exe '%!tika --encoding=UTF-8 --detect --html ' . expand('%:p:S') . ' | ' . s:browser
     setlocal fileencoding=utf-8
-    if exists(':EasyAlign') | exe '%EasyAlign */\t\+/' | endif
+    if exists(':EasyAlign') == 2 | exe '%EasyAlign */\t\+/' | endif
   elseif executable('libreoffice') && exist('s:browser')
     silent exe '%!libreoffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' >/dev/null && cat ' . s:tmpdir . '/' . expand('%:t:r') . '.html' . ' | ' . s:browser
   elseif executable('libreoffice')
     silent exe '%!libreoffice --headless --convert-to csv --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' >/dev/null && cat ' . s:tmpdir . '/' . expand('%:t:r') . '.csv'
-    if exists(':EasyAlign') | exe '%EasyAlign */,/' | endif
+    if exists(':EasyAlign') == 2 | exe '%EasyAlign */,/' | endif
     setlocal filetype=csv
   elseif executable('tika')
     silent %!tika --encoding=UTF-8 --detect --text -'
     setlocal fileencoding=utf-8
-    if exists(':EasyAlign') | exe '%EasyAlign */\t\+/' | endif
+    if exists(':EasyAlign') == 2 | exe '%EasyAlign */\t\+/' | endif
     setlocal filetype=text
   else
     let exts = '*.xlsx,*.xlsm,*.xlsb'
