@@ -1,3 +1,8 @@
+if exists('g:loaded_office')
+  finish
+endif
+let g:loaded_office = 1
+
 let s:tmpdir = has('win32') ? $TMP : $TMPDIR
 
 if executable('w3m')
@@ -15,7 +20,7 @@ let g:zipPlugin_ext='*.apk,*.celzip,*.crtx,*.ear,*.gcsx,*.glox,*.gqsx,*.kmz,*.ox
 
 " {{{ PDF
 autocmd BufReadPost *.pdf call s:pdf()
-fun s:pdf()
+function! s:pdf()
   if executable('pdftotext') && exists('s:browser')
     silent exe '%!pdftotext -htmlmeta -enc UTF-8 ' . expand('%:p:S') . ' -' . ' | ' . s:browser
     setlocal fileencoding=utf-8
@@ -34,12 +39,12 @@ fun s:pdf()
   endif
   setlocal nomodifiable readonly
   setlocal filetype=text
-endf
+endfunction
 " }}}
 
 " {{{ EPUB
 autocmd BufReadPost *.epub call s:epub()
-fun s:epub()
+function! s:epub()
   if executable('pandoc')
     silent %!pandoc --from=epub --to=plain %:p:S
     setlocal fileencoding=utf-8
@@ -55,12 +60,12 @@ fun s:epub()
     exe 'au zip BufReadCmd ' . exts . ' call zip#Browse(expand("<amatch>"))'
     doautocmd zip BufReadCmd
   endif
-endf
+endfunction
 " }}}
 
 " {{{ RTF
 autocmd BufReadPost *.rtf call s:rtf()
-fun s:rtf()
+function! s:rtf()
   if executable('unrtf')
     silent %!unrtf -P /etc/unrtf --text
   elseif executable('tika')
@@ -71,12 +76,12 @@ fun s:rtf()
   endif
   setlocal nomodifiable readonly
   setlocal filetype=text
-endf
+endfunction
 " }}}
 
 " {{{ ODT
 autocmd BufReadPost *.odt call s:odt()
-fun s:odt()
+function! s:odt()
   if executable('odt2txt')
     silent %!odt2txt --encoding=UTF-8 %:p:S
     setlocal fileencoding=utf-8
@@ -94,12 +99,12 @@ fun s:odt()
   endif
   setlocal nomodifiable readonly
   setlocal filetype=text
-endf
+endfunction
 " }}}
 
 " {{{ DOC
 autocmd BufReadPost *.do{c,t} call s:doc()
-fun s:doc()
+function! s:doc()
   if executable('wvText')
     silent %!wvText %:p:S
   elseif executable('wvHtml') && exists('s:browser')
@@ -116,12 +121,12 @@ fun s:doc()
   endif
   setlocal nomodifiable readonly
   setlocal filetype=text
-endf
+endfunction
 " }}}
 
 " {{{ DOCX
 autocmd BufReadPost *.do{c,t}{m,x} call s:docx()
-fun s:docx()
+function! s:docx()
   if executable('pandoc')
     silent %!pandoc --from=docx --to=plain %:p:S
     setlocal fileencoding=utf-8
@@ -142,12 +147,12 @@ fun s:docx()
   endif
   setlocal nomodifiable readonly
   setlocal filetype=text
-endf
+endfunction
 " }}}
 
 " {{{ XLS
 autocmd BufReadPost *.xl{m,s,t} call s:xsl()
-fun s:xsl()
+function! s:xsl()
   if executable('xlhtml') && exists('s:browser')
     silent silent exe '%!xlhtml ' . expand('%:p:S') . ' | ' . s:browser
   elseif executable('xls2csv')
@@ -170,12 +175,12 @@ fun s:xsl()
   endif
   setlocal nowrap
   setlocal nomodifiable readonly
-endf
+endfunction
 " }}}
 
 " {{{ XLSX
 autocmd BufReadPost *.xl{s,t}{x,m,b} call s:xlsx()
-fun s:xlsx()
+function! s:xlsx()
   if executable('git-xlsx-textconv.pl')
     silent %!git-xlsx-textconv.pl %:p:S
     if exists(':EasyAlign') == 2 | exe '%EasyAlign */\t\+/' | endif 
@@ -209,12 +214,12 @@ fun s:xlsx()
   endif
   setlocal nowrap
   setlocal nomodifiable readonly
-endf
+endfunction
 " }}}
 
 " {{{ PPT
 autocmd BufReadPost *.pp{s,t} call s:ppt()
-fun s:ppt()
+function! s:ppt()
   if executable('tika') && exist('s:browser') 
     silent exe '%!tika --encoding=UTF-8 --detect --html -' . ' | ' . s:browser
     setlocal fileencoding=utf-8
@@ -230,12 +235,12 @@ fun s:ppt()
   endif
   setlocal nomodifiable readonly
   setlocal filetype=text
-endf
+endfunction
 " }}}
 
 " {{{ PPTX
 autocmd BufReadPost *.pp{s,t}{x,m} call s:pptx()
-fun s:pptx()
+function! s:pptx()
   if executable('pptx2md')
     let output_file = s:tmpdir . '/' . expand('%:t:r') . '.md'
     silent exe '%!pptx2md --disable_image --disable_wmf ' . expand('%:p:S') . ' -o ' . output_file . ' >/dev/null && cat ' output_file
@@ -262,7 +267,7 @@ fun s:pptx()
     endif
   endif
   setlocal nomodifiable readonly
-endf
+endfunction
 " }}}
 
 " {{{ OTHER FILE TYPES
