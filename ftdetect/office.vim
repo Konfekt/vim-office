@@ -189,6 +189,10 @@ function! s:xlsx()
     silent %!git-xlsx-textconv %:p:S
     if exists(':EasyAlign') == 2 | exe '%EasyAlign */\t\+/' | endif
     setlocal filetype=text
+  elseif executable('excel2csv')
+    silent %!excel2csv %:p:S
+    if exists(':EasyAlign') == 2 | exe '%EasyAlign */,/' | endif 
+    setlocal filetype=csv
   elseif executable('tika') && exists('s:browser')
     silent exe '%!tika --encoding=UTF-8 --detect --html ' . expand('%:p:S') . ' | ' . s:browser
     setlocal fileencoding=utf-8
