@@ -158,6 +158,10 @@ autocmd BufReadPost *.xl{m,s,t} call s:xsl()
 function! s:xsl()
   if executable('xlhtml') && exists('s:browser')
     silent silent exe '%!xlhtml ' . expand('%:p:S') . ' | ' . s:browser
+  elseif executable('excel2csv')
+    silent exe '%!excel2csv --trim ' . expand('%:p:S')
+    if exists(':EasyAlign') == 2 | exe '%EasyAlign */,/' | endif
+    setlocal filetype=csv
   elseif executable('xls2csv')
     let in = expand('%:p:S')
     let out = s:tmpdir . '/' . expand('%:t:r')
