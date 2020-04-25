@@ -5,6 +5,9 @@ let g:loaded_office = 1
 
 let s:tmpdir = has('win32') ? $TMP : $TMPDIR
 
+let s:cat = has('win32') ? 'type' : 'cat'
+let s:nul = has('win32') ? 'NUL' : '/dev/null'
+
 if executable('w3m')
   let  s:browser = 'w3m -dump -T text/html'
 elseif executable('elinks')
@@ -156,13 +159,15 @@ function! s:xsl()
   if executable('xlhtml') && exists('s:browser')
     silent silent exe '%!xlhtml ' . expand('%:p:S') . ' | ' . s:browser
   elseif executable('xls2csv')
-    silent %!xls2csv %:p:S
+    let in = expand('%:p:S')
+    let out = s:tmpdir . '/' . expand('%:t:r')
+    silent exe '%!xls2csv -q -a UTF-8 -b WINDOWS-1252 -x ' . in . ' -c ' . out . ' > ' . s:nul . ' && ' . s:cat . ' ' . out
     if exists(':EasyAlign') == 2 | exe '%EasyAlign */,/' | endif
     setlocal filetype=csv
   elseif executable('libreoffice') && exists('s:browser')
-    silent exe '%!libreoffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' >/dev/null && cat ' . s:tmpdir . '/' . expand('%:t:r') . '.html' 
+    silent exe '%!libreoffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . '/' . expand('%:t:r') . '.html' 
   elseif executable('libreoffice')
-    silent exe '%!libreoffice --headless --convert-to csv --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' >/dev/null && cat ' . s:tmpdir . '/' . expand('%:t:r') . '.csv' 
+    silent exe '%!libreoffice --headless --convert-to csv --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . '/' . expand('%:t:r') . '.csv' 
     if exists(':EasyAlign') == 2 | exe '%EasyAlign */,/' | endif
     setlocal filetype=csv
   elseif executable('tika') && exists('s:browser')
@@ -198,9 +203,9 @@ function! s:xlsx()
     setlocal fileencoding=utf-8
     if exists(':EasyAlign') == 2 | exe '%EasyAlign */\t\+/' | endif
   elseif executable('libreoffice') && exists('s:browser')
-    silent exe '%!libreoffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' >/dev/null && cat ' . s:tmpdir . '/' . expand('%:t:r') . '.html' . ' | ' . s:browser
+    silent exe '%!libreoffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . '/' . expand('%:t:r') . '.html' . ' | ' . s:browser
   elseif executable('libreoffice')
-    silent exe '%!libreoffice --headless --convert-to csv --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' >/dev/null && cat ' . s:tmpdir . '/' . expand('%:t:r') . '.csv'
+    silent exe '%!libreoffice --headless --convert-to csv --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . '/' . expand('%:t:r') . '.csv'
     if exists(':EasyAlign') == 2 | exe '%EasyAlign */,/' | endif
     setlocal filetype=csv
   elseif executable('tika')
@@ -231,7 +236,7 @@ function! s:ppt()
     silent %!tika --encoding=UTF-8 --detect --text -
     setlocal fileencoding=utf-8
   elseif executable('libreoffice') && exists('s:browser')
-    silent exe '%!libreoffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' >/dev/null && cat ' . s:tmpdir . '/' . expand('%:t:r') . '.html' . ' | ' . s:browser
+    silent exe '%!libreoffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . '/' . expand('%:t:r') . '.html' . ' | ' . s:browser
   elseif executable('libreoffice')
     silent %!libreoffice --cat %:p:S
   elseif executable('catppt')
@@ -247,7 +252,7 @@ autocmd BufReadPost *.pp{s,t}{x,m} call s:pptx()
 function! s:pptx()
   if executable('pptx2md')
     let output_file = s:tmpdir . '/' . expand('%:t:r') . '.md'
-    silent exe '%!pptx2md --disable_image --disable_wmf ' . expand('%:p:S') . ' -o ' . output_file . ' >/dev/null && cat ' output_file
+    silent exe '%!pptx2md --disable_image --disable_wmf ' . expand('%:p:S') . ' -o ' . output_file . ' > ' . s:nul . ' && ' . s:cat . ' ' output_file
     setlocal filetype=markdown foldmethod=expr foldexpr=MarkdownFold()
   elseif executable('tika') && exists('s:browser') 
     silent exe '%!tika --encoding=UTF-8 --detect --html -' . ' | ' . s:browser
@@ -258,7 +263,7 @@ function! s:pptx()
     setlocal fileencoding=utf-8
     setlocal filetype=text
   elseif executable('libreoffice') && exists('s:browser')
-    silent exe '%!libreoffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' >/dev/null && cat ' . s:tmpdir . '/' . expand('%:t:r') . '.html' . ' | ' . s:browser
+    silent exe '%!libreoffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . '/' . expand('%:t:r') . '.html' . ' | ' . s:browser
   elseif executable('libreoffice')
     silent %!libreoffice --cat %:p:S
     setlocal filetype=text
