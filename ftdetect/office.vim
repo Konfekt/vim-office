@@ -74,8 +74,8 @@ function! s:rtf()
   elseif executable('tika')
     silent %!tika --encoding=UTF-8 --detect --text -
     setlocal fileencoding=utf-8
-  elseif executable('libreoffice')
-    silent %!libreoffice --cat %:p:S
+  elseif executable('soffice')
+    silent %!soffice --cat %:p:S
   endif
   setlocal nomodifiable readonly
   setlocal filetype=text
@@ -97,8 +97,8 @@ function! s:odt()
   elseif executable('tika')
     silent %!tika --encoding=UTF-8 --detect --text -
     setlocal fileencoding=utf-8
-  elseif executable('libreoffice')
-    silent %!libreoffice --cat %:p:S
+  elseif executable('soffice')
+    silent %!soffice --cat %:p:S
   endif
   setlocal nomodifiable readonly
   setlocal filetype=text
@@ -115,8 +115,8 @@ function! s:doc()
   elseif executable('tika')
     silent %!tika --encoding=UTF-8 --detect --text -'
     setlocal fileencoding=utf-8
-  elseif executable('libreoffice')
-    silent %!libreoffice --cat %:p:S
+  elseif executable('soffice')
+    silent %!soffice --cat %:p:S
   elseif executable('catdoc')
     silent %!catdoc %:p:S
   elseif executable('antiword')
@@ -138,8 +138,8 @@ function! s:docx()
   elseif executable('tika')
     silent %!tika --encoding=UTF-8 --detect --text -
     setlocal fileencoding=utf-8
-  elseif executable('libreoffice')
-    silent %!libreoffice --cat %:p:S
+  elseif executable('soffice')
+    silent %!soffice --cat %:p:S
   else
     let exts = '*.docx,*.docm,*.dotx,*.dotm'
     let g:zipPlugin_ext .= ',' .  exts
@@ -168,10 +168,10 @@ function! s:xsl()
     silent exe '%!xls2csv -q -a UTF-8 -b WINDOWS-1252 -x ' . in . ' -c ' . out . ' > ' . s:nul . ' && ' . s:cat . ' ' . out
     if exists(':EasyAlign') == 2 | exe '%EasyAlign */,/' | endif
     setlocal filetype=csv
-  elseif executable('libreoffice') && exists('s:browser')
-    silent exe '%!libreoffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . '/' . expand('%:t:r') . '.html' 
-  elseif executable('libreoffice')
-    silent exe '%!libreoffice --headless --convert-to csv --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . '/' . expand('%:t:r') . '.csv' 
+  elseif executable('soffice') && exists('s:browser')
+    silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . '/' . expand('%:t:r') . '.html' 
+  elseif executable('soffice')
+    silent exe '%!soffice --headless --convert-to csv --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . '/' . expand('%:t:r') . '.csv' 
     if exists(':EasyAlign') == 2 | exe '%EasyAlign */,/' | endif
     setlocal filetype=csv
   elseif executable('tika') && exists('s:browser')
@@ -206,10 +206,10 @@ function! s:xlsx()
     silent exe '%!tika --encoding=UTF-8 --detect --html ' . expand('%:p:S') . ' | ' . s:browser
     setlocal fileencoding=utf-8
     if exists(':EasyAlign') == 2 | exe '%EasyAlign */\t\+/' | endif
-  elseif executable('libreoffice') && exists('s:browser')
-    silent exe '%!libreoffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . '/' . expand('%:t:r') . '.html' . ' | ' . s:browser
-  elseif executable('libreoffice')
-    silent exe '%!libreoffice --headless --convert-to csv --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . '/' . expand('%:t:r') . '.csv'
+  elseif executable('soffice') && exists('s:browser')
+    silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . '/' . expand('%:t:r') . '.html' . ' | ' . s:browser
+  elseif executable('soffice')
+    silent exe '%!soffice --headless --convert-to csv --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . '/' . expand('%:t:r') . '.csv'
     if exists(':EasyAlign') == 2 | exe '%EasyAlign */,/' | endif
     setlocal filetype=csv
   elseif executable('tika')
@@ -239,10 +239,10 @@ function! s:ppt()
   elseif executable('tika')
     silent %!tika --encoding=UTF-8 --detect --text -
     setlocal fileencoding=utf-8
-  elseif executable('libreoffice') && exists('s:browser')
-    silent exe '%!libreoffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . '/' . expand('%:t:r') . '.html' . ' | ' . s:browser
-  elseif executable('libreoffice')
-    silent %!libreoffice --cat %:p:S
+  elseif executable('soffice') && exists('s:browser')
+    silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . '/' . expand('%:t:r') . '.html' . ' | ' . s:browser
+  elseif executable('soffice')
+    silent %!soffice --cat %:p:S
   elseif executable('catppt')
     silent %!catppt %:p:S
   endif
@@ -266,10 +266,10 @@ function! s:pptx()
     silent exe '%!tika --encoding=UTF-8 --detect --text -'
     setlocal fileencoding=utf-8
     setlocal filetype=text
-  elseif executable('libreoffice') && exists('s:browser')
-    silent exe '%!libreoffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . '/' . expand('%:t:r') . '.html' . ' | ' . s:browser
-  elseif executable('libreoffice')
-    silent %!libreoffice --cat %:p:S
+  elseif executable('soffice') && exists('s:browser')
+    silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . '/' . expand('%:t:r') . '.html' . ' | ' . s:browser
+  elseif executable('soffice')
+    silent %!soffice --cat %:p:S
     setlocal filetype=text
   else
     let exts = '*.pptx,*.pptm,*.ppsx,*.ppsm'
