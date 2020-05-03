@@ -155,8 +155,8 @@ endfunction
 " }}}
 
 " {{{ XLS
-autocmd BufReadPost *.xl{m,s,t} call s:xsl()
-function! s:xsl()
+autocmd BufReadPost *.xl{m,s,t} call s:xls()
+function! s:xls()
   if executable('xlhtml') && exists('s:browser')
     silent silent exe '%!xlhtml ' . expand('%:p:S') . ' | ' . s:browser
   elseif executable('excel2csv')
@@ -203,16 +203,16 @@ function! s:xlsx()
     silent %!excel2csv %:p:S
     if exists(':EasyAlign') == 2 | exe '%EasyAlign */,/' | endif 
     setlocal filetype=csv
-  elseif executable('tika') && exists('s:browser')
-    silent exe '%!tika --encoding=UTF-8 --detect --html ' . expand('%:p:S') . ' | ' . s:browser
-    setlocal fileencoding=utf-8
-    if exists(':EasyAlign') == 2 | exe '%EasyAlign */\t\+/' | endif
   elseif executable('soffice') && exists('s:browser')
     silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . s:slash . expand('%:t:r') . '.html' . ' | ' . s:browser
   elseif executable('soffice')
     silent exe '%!soffice --headless --convert-to csv --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . s:slash . expand('%:t:r') . '.csv'
     if exists(':EasyAlign') == 2 | exe '%EasyAlign */,/' | endif
     setlocal filetype=csv
+  elseif executable('tika') && exists('s:browser')
+    silent exe '%!tika --encoding=UTF-8 --detect --html ' . expand('%:p:S') . ' | ' . s:browser
+    setlocal fileencoding=utf-8
+    if exists(':EasyAlign') == 2 | exe '%EasyAlign */\t\+/' | endif
   elseif executable('tika')
     silent %!tika --encoding=UTF-8 --detect --text -'
     setlocal fileencoding=utf-8
