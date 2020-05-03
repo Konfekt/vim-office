@@ -1,13 +1,15 @@
-if exists('g:loaded_office')
+if exists('g:loaded_office') || &cp
   finish
 endif
 let g:loaded_office = 1
 
-let s:slash = exists('+shellslash') && !&shellslash ? '\' : '/'
-let s:tmpdir = has('win32') ? $TMP : $TMPDIR
+let s:keepcpo         = &cpo
+set cpo&vim
 
-let s:cat = has('win32') ? 'type' : 'cat'
-let s:nul = has('win32') ? 'NUL' : '/dev/null'
+let s:slash  = exists('+shellslash') && !&shellslash ? '\' : '/'
+let s:tmpdir = has('win32') ? $TMP : $TMPDIR
+let s:cat    = has('win32') ? 'type' : 'cat'
+let s:nul    = has('win32') ? 'NUL' : '/dev/null'
 
 if executable('w3m')
   let  s:browser = 'w3m -dump -T text/html'
@@ -299,5 +301,9 @@ else
   endif
 endif
 " }}}
+
+" ------------------------------------------------------------------------------
+let &cpo= s:keepcpo
+unlet s:keepcpo
 
 " ex: set foldmethod=marker: 
