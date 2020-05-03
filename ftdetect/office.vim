@@ -71,7 +71,7 @@ endfunction
 autocmd BufReadPost *.rtf call s:rtf()
 function! s:rtf()
   if executable('unrtf')
-    silent %!unrtf -P /etc/unrtf --text
+    silent %!unrtf --text
   elseif executable('tika')
     silent %!tika --encoding=UTF-8 --detect --text -
     setlocal fileencoding=utf-8
