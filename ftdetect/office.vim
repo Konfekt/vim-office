@@ -3,6 +3,7 @@ if exists('g:loaded_office')
 endif
 let g:loaded_office = 1
 
+let s:slash = exists('+shellslash') && !&shellslash ? '\' : '/'
 let s:tmpdir = has('win32') ? $TMP : $TMPDIR
 
 let s:cat = has('win32') ? 'type' : 'cat'
@@ -164,14 +165,14 @@ function! s:xsl()
     setlocal filetype=csv
   elseif executable('xls2csv')
     let in = expand('%:p:S')
-    let out = s:tmpdir . '/' . expand('%:t:r')
+    let out = s:tmpdir . s:slash . expand('%:t:r')
     silent exe '%!xls2csv -q -a UTF-8 -b WINDOWS-1252 -x ' . in . ' -c ' . out . ' > ' . s:nul . ' && ' . s:cat . ' ' . out
     if exists(':EasyAlign') == 2 | exe '%EasyAlign */,/' | endif
     setlocal filetype=csv
   elseif executable('soffice') && exists('s:browser')
-    silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . '/' . expand('%:t:r') . '.html' 
+    silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . s:slash . expand('%:t:r') . '.html' 
   elseif executable('soffice')
-    silent exe '%!soffice --headless --convert-to csv --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . '/' . expand('%:t:r') . '.csv' 
+    silent exe '%!soffice --headless --convert-to csv --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . s:slash . expand('%:t:r') . '.csv' 
     if exists(':EasyAlign') == 2 | exe '%EasyAlign */,/' | endif
     setlocal filetype=csv
   elseif executable('tika') && exists('s:browser')
@@ -207,9 +208,9 @@ function! s:xlsx()
     setlocal fileencoding=utf-8
     if exists(':EasyAlign') == 2 | exe '%EasyAlign */\t\+/' | endif
   elseif executable('soffice') && exists('s:browser')
-    silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . '/' . expand('%:t:r') . '.html' . ' | ' . s:browser
+    silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . s:slash . expand('%:t:r') . '.html' . ' | ' . s:browser
   elseif executable('soffice')
-    silent exe '%!soffice --headless --convert-to csv --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . '/' . expand('%:t:r') . '.csv'
+    silent exe '%!soffice --headless --convert-to csv --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . s:slash . expand('%:t:r') . '.csv'
     if exists(':EasyAlign') == 2 | exe '%EasyAlign */,/' | endif
     setlocal filetype=csv
   elseif executable('tika')
@@ -240,7 +241,7 @@ function! s:ppt()
     silent %!tika --encoding=UTF-8 --detect --text -
     setlocal fileencoding=utf-8
   elseif executable('soffice') && exists('s:browser')
-    silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . '/' . expand('%:t:r') . '.html' . ' | ' . s:browser
+    silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . s:slash . expand('%:t:r') . '.html' . ' | ' . s:browser
   elseif executable('soffice')
     silent %!soffice --cat %:p:S
   elseif executable('catppt')
@@ -255,7 +256,7 @@ endfunction
 autocmd BufReadPost *.pp{s,t}{x,m} call s:pptx()
 function! s:pptx()
   if executable('pptx2md')
-    let output_file = s:tmpdir . '/' . expand('%:t:r') . '.md'
+    let output_file = s:tmpdir . s:slash . expand('%:t:r') . '.md'
     silent exe '%!pptx2md --disable_image --disable_wmf ' . expand('%:p:S') . ' -o ' . output_file . ' > ' . s:nul . ' && ' . s:cat . ' ' output_file
     setlocal filetype=markdown foldmethod=expr foldexpr=MarkdownFold()
   elseif executable('tika') && exists('s:browser') 
@@ -267,7 +268,7 @@ function! s:pptx()
     setlocal fileencoding=utf-8
     setlocal filetype=text
   elseif executable('soffice') && exists('s:browser')
-    silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . '/' . expand('%:t:r') . '.html' . ' | ' . s:browser
+    silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . s:slash . expand('%:t:r') . '.html' . ' | ' . s:browser
   elseif executable('soffice')
     silent %!soffice --cat %:p:S
     setlocal filetype=text
