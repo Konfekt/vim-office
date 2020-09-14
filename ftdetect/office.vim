@@ -37,7 +37,7 @@ function! s:pdf()
     silent exe '%!pdftohtml -i -noframes -nodrm -enc UTF-8 -stdout ' . expand('%:p:S') . ' | ' . s:browser
     setlocal fileencoding=utf-8
   elseif executable('tika') && exists('s:browser')
-    silent exe '%!tika --encoding=UTF-8 --detect --html' . expand('%:p:S') . ' | ' . s:browser
+    silent exe '%!tika --encoding=UTF-8 --detect --html ' . expand('%:p:S') . ' | ' . s:browser
     setlocal fileencoding=utf-8
   elseif executable('tika')
     silent %!tika --encoding=UTF-8 --detect --text -
