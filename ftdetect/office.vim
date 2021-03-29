@@ -149,7 +149,7 @@ endfunction
 autocmd BufReadPost *.odp call s:odp()
 function! s:odp()
   if executable('soffice') && exists('s:browser')
-    silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . s:slash . expand('%:t:r:S') . '.html' . ' | ' . s:browser
+    silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:browser . ' ' . s:tmpdir . s:slash . expand('%:t:r:S') . '.html'
   elseif executable('soffice')
     silent %!soffice --cat %:p:S
     setlocal filetype=text
@@ -268,7 +268,7 @@ function! s:xlsx()
     if exists(':EasyAlign') == 2 | exe '%EasyAlign */,/' | endif 
     setlocal filetype=csv
   elseif executable('soffice') && exists('s:browser')
-    silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . s:slash . expand('%:t:r:S') . '.html' . ' | ' . s:browser
+    silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:browser . ' ' . s:tmpdir . s:slash . expand('%:t:r:S') . '.html'
   elseif executable('soffice')
     silent exe '%!soffice --headless --convert-to csv --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . s:slash . expand('%:t:r:S') . '.csv'
     if exists(':EasyAlign') == 2 | exe '%EasyAlign */,/' | endif
@@ -305,7 +305,7 @@ function! s:ppt()
     silent %!tika --encoding=UTF-8 --detect --text -
     setlocal fileencoding=utf-8
   elseif executable('soffice') && exists('s:browser')
-    silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . s:slash . expand('%:t:r:S') . '.html' . ' | ' . s:browser
+    silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:browser . ' ' . s:tmpdir . s:slash . expand('%:t:r:S') . '.html'
   elseif executable('soffice')
     silent %!soffice --cat %:p:S
   elseif executable('catppt')
@@ -332,7 +332,7 @@ function! s:pptx()
     setlocal fileencoding=utf-8
     setlocal filetype=text
   elseif executable('soffice') && exists('s:browser')
-    silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . s:slash . expand('%:t:r:S') . '.html' . ' | ' . s:browser
+    silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:browser . ' ' . s:tmpdir . s:slash . expand('%:t:r:S') . '.html'
   elseif executable('soffice')
     silent %!soffice --cat %:p:S
     setlocal filetype=text
