@@ -98,7 +98,7 @@ endfunction
 " }}}
 
 " {{{ ODT
-autocmd BufReadPost *.odt call s:odt()
+autocmd BufReadPost *.{odt,sxw} call s:odt()
 function! s:odt()
   if executable('odt2txt')
     silent %!odt2txt --encoding=UTF-8 %:p:S
@@ -117,6 +117,56 @@ function! s:odt()
   endif
   setlocal nomodifiable readonly
   setlocal filetype=text
+endfunction
+" }}}
+
+" {{{ ODS
+autocmd BufReadPost *.ods call s:ods()
+function! s:ods()
+  if executable('soffice') && exists('s:browser')
+    silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . s:slash . expand('%:t:r') . '.html' 
+  elseif executable('soffice')
+    silent exe '%!soffice --headless --convert-to csv --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . s:slash . expand('%:t:r') . '.csv' 
+    if exists(':EasyAlign') == 2 | exe '%EasyAlign */,/' | endif
+    setlocal filetype=csv
+  elseif executable('tika') && exists('s:browser')
+    silent exe '%!tika --encoding=UTF-8 --detect --html ' . expand('%:p:S') . ' | ' . s:browser
+    setlocal fileencoding=utf-8
+  elseif executable('tika')
+    silent %!tika --encoding=UTF-8 --detect --text -
+    setlocal fileencoding=utf-8
+    if exists(':EasyAlign') == 2 | exe '%EasyAlign */\t\+/' | endif
+  elseif executable('odt2txt')
+    silent %!odt2txt --encoding=UTF-8 %:p:S
+    setlocal fileencoding=utf-8
+  endif
+  setlocal nowrap
+  setlocal nomodifiable readonly
+endfunction
+" }}}
+
+" {{{ ODP
+autocmd BufReadPost *.odp call s:odp()
+function! s:odp()
+  if executable('soffice') && exists('s:browser')
+    silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . s:slash . expand('%:t:r:S') . '.html' . ' | ' . s:browser
+  elseif executable('soffice')
+    silent %!soffice --cat %:p:S
+    setlocal filetype=text
+  elseif executable('tika') && exists('s:browser') 
+    silent exe '%!tika --encoding=UTF-8 --detect --html -' . ' | ' . s:browser
+    setlocal fileencoding=utf-8
+    setlocal filetype=text
+  elseif executable('tika')
+    silent exe '%!tika --encoding=UTF-8 --detect --text -'
+    setlocal fileencoding=utf-8
+    setlocal filetype=text
+  elseif executable('odt2txt')
+    silent %!odt2txt --encoding=UTF-8 %:p:S
+    setlocal fileencoding=utf-8
+    setlocal filetype=text
+  endif
+  setlocal nomodifiable readonly
 endfunction
 " }}}
 
