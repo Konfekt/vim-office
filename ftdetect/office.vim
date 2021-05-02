@@ -49,8 +49,8 @@ endfunction
 " }}}
 
 " {{{ DJVU
-autocmd BufReadPost *.djvu? call s:pdf()
-function! s:pdf()
+autocmd BufReadPost *.djvu? call s:djvu()
+function! s:djvu()
   if executable('djvutxt')
     silent %!djvutxt %:p:S -
     setlocal fileencoding=utf-8
