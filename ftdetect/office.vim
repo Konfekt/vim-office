@@ -12,11 +12,11 @@ let s:cat    = has('win32') ? 'type' : 'cat'
 let s:nul    = has('win32') ? 'NUL' : '/dev/null'
 
 if executable('w3m')
-  let  s:browser = 'w3m -dump -T text/html'
+  let  s:browser = 'w3m -dump -T text/html -s'
 elseif executable('elinks')
   let  s:browser = 'elinks -dump 1'
 elseif executable('lynx')
-  let  s:browser = 'lynx -dump -stdin'
+  let  s:browser = 'lynx -dump -stdin -trim_blank_lines'
 endif
 
 " Remove extensions jar?|epub|doc[xm]|xls[xmb]|pp[st][xm] from g:zipPlugin_ext
