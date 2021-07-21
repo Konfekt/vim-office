@@ -17,6 +17,8 @@ elseif executable('elinks')
   let  s:browser = 'elinks -dump 1'
 elseif executable('lynx')
   let  s:browser = 'lynx -dump -stdin -trim_blank_lines'
+elseif executable('html2text')
+  let  s:browser = 'html2text -from_encoding utf-8'
 endif
 
 " Remove extensions jar?|epub|doc[xm]|xls[xmb]|pp[st][xm] from g:zipPlugin_ext
