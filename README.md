@@ -20,14 +20,14 @@ It prefers, whenever available, appropriate external converters such as [unrtf](
         - on Linux, a shell script `~/bin/tika` that reads
         ```sh
             #!/bin/sh
-            exec java -jar "$HOME/bin/tika.jar" "$@" 2>/dev/null
+            exec java -Dfile.encoding=UTF-8 -jar "$HOME/bin/tika.jar" "$@" 2>/dev/null
         ```
         and mark it executable (by `chmod a+x ~/bin/tika`).
 
         - on Microsoft Windows, a batch script `%USERPROFILE%\bin\tika.bat` that reads
         ```bat
             @echo off
-            java -jar "%USERPROFILE%\bin\tika.jar" %*
+            java -Dfile.encoding=UTF-8 -jar "%USERPROFILE%\bin\tika.jar" %*
         ```
 
     0. Add the folder of the newly created `tika` executable to your environment variable `$PATH` (on Linux) respectively `%PATH%` (on Microsoft Windows):
