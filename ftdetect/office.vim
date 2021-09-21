@@ -129,7 +129,7 @@ function! s:ods()
     silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:browser . ' ' . s:tmpdir . s:slash . expand('%:t:r:S') . '.html' 
   elseif executable('soffice')
     silent exe '%!soffice --headless --convert-to csv --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . s:slash . expand('%:t:r:S') . '.csv' 
-    if exists(':EasyAlign') == 2 | exe '%EasyAlign */,/' | endif
+    if exists(':EasyAlign') == 2 | exe '%EasyAlign*,' | endif
     setlocal filetype=csv
   elseif executable('tika') && exists('s:browser')
     silent exe '%!tika --encoding=UTF-8 --detect --html ' . expand('%:p:S') . ' | ' . s:browser
@@ -225,21 +225,25 @@ autocmd BufReadPost *.xl{m,s,t} call s:xls()
 function! s:xls()
   if executable('xlhtml') && exists('s:browser')
     silent silent exe '%!xlhtml ' . expand('%:p:S') . ' | ' . s:browser
+  elseif executable('xlscat')
+    silent %!xlscat %:p:S
+    if exists(':EasyAlign') == 2 | exe '%EasyAlign*|' | exe '%EasyAlign */│\+/' | endif
+  " " Perl version of xls2csv = Wrapper for xlscat
+  " elseif executable('xls2csv')
+  "   let in = expand('%:p:S')
+  "   let out = s:tmpdir . s:slash . expand('%:t:r:S')
+  "   silent exe '%!xls2csv -q -a UTF-8 -b WINDOWS-1252 -x ' . in . ' -c ' . out . ' > ' . s:nul . ' && ' . s:cat . ' ' . out
+  "   if exists(':EasyAlign') == 2 | exe '%EasyAlign*,' | endif
+  "   setlocal filetype=csv
   elseif executable('excel2csv')
     silent exe '%!excel2csv --trim ' . expand('%:p:S')
-    if exists(':EasyAlign') == 2 | exe '%EasyAlign */,/' | endif
-    setlocal filetype=csv
-  elseif executable('xls2csv')
-    let in = expand('%:p:S')
-    let out = s:tmpdir . s:slash . expand('%:t:r:S')
-    silent exe '%!xls2csv -q -a UTF-8 -b WINDOWS-1252 -x ' . in . ' -c ' . out . ' > ' . s:nul . ' && ' . s:cat . ' ' . out
-    if exists(':EasyAlign') == 2 | exe '%EasyAlign */,/' | endif
+    if exists(':EasyAlign') == 2 | exe '%EasyAlign*,' | endif
     setlocal filetype=csv
   elseif executable('soffice') && exists('s:browser')
     silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:browser . ' ' . s:tmpdir . s:slash . expand('%:t:r:S') . '.html' 
   elseif executable('soffice')
     silent exe '%!soffice --headless --convert-to csv --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . s:slash . expand('%:t:r:S') . '.csv' 
-    if exists(':EasyAlign') == 2 | exe '%EasyAlign */,/' | endif
+    if exists(':EasyAlign') == 2 | exe '%EasyAlign*,' | endif
     setlocal filetype=csv
   elseif executable('tika') && exists('s:browser')
     silent exe '%!tika --encoding=UTF-8 --detect --html ' . expand('%:p:S') . ' | ' . s:browser
@@ -257,23 +261,31 @@ endfunction
 " {{{ XLSX
 autocmd BufReadPost *.xl{s,t}{x,m,b} call s:xlsx()
 function! s:xlsx()
-  if executable('git-xlsx-textconv.pl')
-    silent %!git-xlsx-textconv.pl %:p:S
-    if exists(':EasyAlign') == 2 | exe '%EasyAlign */\t\+/' | endif 
-    setlocal filetype=text
-  elseif executable('git-xlsx-textconv')
-    silent %!git-xlsx-textconv %:p:S
-    if exists(':EasyAlign') == 2 | exe '%EasyAlign */\t\+/' | endif
-    setlocal filetype=text
+  " Python version of xls2csv
+  if executable('xls2csv.py')
+    silent %!xls2csv.py %:p:S
+    if exists(':EasyAlign') == 2 | exe '%EasyAlign*,' | endif 
+    setlocal filetype=csv
+  elseif executable('xlscat')
+    silent %!xlscat %:p:S
+    " take account of unicode homoglyph │ instead of |
+    if exists(':EasyAlign') == 2 | exe '%EasyAlign*|' | exe '%EasyAlign */│\+/' | endif
+  " " Perl version of xls2csv = Wrapper for xlscat
+  " elseif executable('xls2csv')
+  "   let in = expand('%:p:S')
+  "   let out = s:tmpdir . s:slash . expand('%:t:r:S')
+  "   silent exe '%!xls2csv -q -a UTF-8 -b WINDOWS-1252 -x ' . in . ' -c ' . out . ' > ' . s:nul . ' && ' . s:cat . ' ' . out
+  "   if exists(':EasyAlign') == 2 | exe '%EasyAlign*,' | endif
+  "   setlocal filetype=csv
   elseif executable('excel2csv')
     silent %!excel2csv %:p:S
-    if exists(':EasyAlign') == 2 | exe '%EasyAlign */,/' | endif 
+    if exists(':EasyAlign') == 2 | exe '%EasyAlign*,' | endif 
     setlocal filetype=csv
   elseif executable('soffice') && exists('s:browser')
     silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:browser . ' ' . s:tmpdir . s:slash . expand('%:t:r:S') . '.html'
   elseif executable('soffice')
     silent exe '%!soffice --headless --convert-to csv --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . s:slash . expand('%:t:r:S') . '.csv'
-    if exists(':EasyAlign') == 2 | exe '%EasyAlign */,/' | endif
+    if exists(':EasyAlign') == 2 | exe '%EasyAlign*,' | endif
     setlocal filetype=csv
   elseif executable('tika') && exists('s:browser')
     silent exe '%!tika --encoding=UTF-8 --detect --html ' . expand('%:p:S') . ' | ' . s:browser
