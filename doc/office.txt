@@ -14,8 +14,8 @@ covered by an installation of
 - LibreOffice and a common text browser (such as `lynx`), and
 - pdftotext.
 
-It prefers, whenever available, appropriate external converters such as
-pandoc, odt2txt, docx2txt.pl, pptx2md, ... to do so, but will fall back to:
+It uses, whenever available, appropriate external converters such as pandoc,
+odt2txt, docx2txt.pl, xlscat, xlsx2csv, pptx2md, ..., but will fall back to:
 
 - Either LibreOffice which is an office suite that (together with a common text
   browser such as lynx) can handle all those formats listed above, except PDFs.
