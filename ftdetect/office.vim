@@ -156,11 +156,11 @@ function! s:odp()
     silent %!soffice --cat %:p:S
     setlocal filetype=text
   elseif executable('tika') && exists('s:browser') 
-    silent exe '%!tika --encoding=UTF-8 --detect --html -' . ' | ' . s:browser
+    silent exe '%!tika --encoding=UTF-8 --detect --html ' . expand('%:p:S') . ' | ' . s:browser
     setlocal fileencoding=utf-8
     setlocal filetype=text
   elseif executable('tika')
-    silent exe '%!tika --encoding=UTF-8 --detect --text -'
+    silent exe '%!tika --encoding=UTF-8 --detect --text ' . expand('%:p:S')
     setlocal fileencoding=utf-8
     setlocal filetype=text
   elseif executable('odt2txt')
@@ -313,7 +313,7 @@ endfunction
 autocmd BufReadPost *.pp{s,t} call s:ppt()
 function! s:ppt()
   if executable('tika') && exists('s:browser') 
-    silent exe '%!tika --encoding=UTF-8 --detect --html -' . ' | ' . s:browser
+    silent exe '%!tika --encoding=UTF-8 --detect --html ' . expand('%:p:S') . ' | ' . s:browser
     setlocal fileencoding=utf-8
   elseif executable('tika')
     silent %!tika --encoding=UTF-8 --detect --text -
@@ -338,11 +338,11 @@ function! s:pptx()
     silent exe '%!pptx2md --disable_image --disable_wmf ' . expand('%:p:S') . ' -o ' . output_file . ' > ' . s:nul . ' && ' . s:cat . ' ' output_file
     setlocal filetype=markdown foldmethod=expr foldexpr=MarkdownFold()
   elseif executable('tika') && exists('s:browser') 
-    silent exe '%!tika --encoding=UTF-8 --detect --html -' . ' | ' . s:browser
+    silent exe '%!tika --encoding=UTF-8 --detect --html ' . expand('%:p:S') . ' | ' . s:browser
     setlocal fileencoding=utf-8
     setlocal filetype=text
   elseif executable('tika')
-    silent exe '%!tika --encoding=UTF-8 --detect --text -'
+    silent exe '%!tika --encoding=UTF-8 --detect --text ' . expand('%:p:S')
     setlocal fileencoding=utf-8
     setlocal filetype=text
   elseif executable('soffice') && exists('s:browser')
@@ -365,7 +365,7 @@ endfunction
 " {{{ OTHER FILE TYPES
 if executable('tika')
   autocmd BufReadPost *.{{rar,7z},{class,ja,jar},chm,{mdb,accdb},{pst,msg},mht{,ml}}
-        \ silent exe '%!tika --encoding=UTF-8 --detect --text -' |
+        \ silent exe '%!tika --encoding=UTF-8 --detect --text ' . expand('%:p:S') |
         \ setlocal fileencoding=utf-8 |
         \ setlocal filetype=text nomodifiable readonly 
 else
