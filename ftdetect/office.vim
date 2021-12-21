@@ -42,7 +42,7 @@ function! s:pdf()
     silent exe '%!tika --encoding=UTF-8 --detect --html ' . expand('%:p:S') . ' | ' . s:browser
     setlocal fileencoding=utf-8
   elseif executable('tika')
-    silent %!tika --encoding=UTF-8 --detect --text -
+    silent exe '%!tika --encoding=UTF-8 --detect --text ' . expand('%:p:S')
     setlocal fileencoding=utf-8
   endif
   setlocal nomodifiable readonly
@@ -69,7 +69,7 @@ function! s:epub()
     silent %!pandoc --from=epub --to=plain %:p:S
     setlocal fileencoding=utf-8
   elseif executable('tika')
-    silent %!tika --encoding=UTF-8 --detect --text -
+    silent exe '%!tika --encoding=UTF-8 --detect --text ' . expand('%:p:S')
     setlocal fileencoding=utf-8
   endif
   setlocal nomodifiable readonly
@@ -89,7 +89,7 @@ function! s:rtf()
   if executable('unrtf')
     silent %!unrtf --text
   elseif executable('tika')
-    silent %!tika --encoding=UTF-8 --detect --text -
+    silent exe '%!tika --encoding=UTF-8 --detect --text ' . expand('%:p:S')
     setlocal fileencoding=utf-8
   elseif executable('soffice')
     silent %!soffice --cat %:p:S
@@ -112,7 +112,7 @@ function! s:odt()
     silent %!pandoc --from=odt --to=plain %:p:S
     setlocal fileencoding=utf-8
   elseif executable('tika')
-    silent %!tika --encoding=UTF-8 --detect --text -
+    silent exe '%!tika --encoding=UTF-8 --detect --text ' . expand('%:p:S')
     setlocal fileencoding=utf-8
   elseif executable('soffice')
     silent %!soffice --cat %:p:S
@@ -135,7 +135,7 @@ function! s:ods()
     silent exe '%!tika --encoding=UTF-8 --detect --html ' . expand('%:p:S') . ' | ' . s:browser
     setlocal fileencoding=utf-8
   elseif executable('tika')
-    silent %!tika --encoding=UTF-8 --detect --text -
+    silent exe '%!tika --encoding=UTF-8 --detect --text ' . expand('%:p:S')
     setlocal fileencoding=utf-8
     if exists(':EasyAlign') == 2 | exe '%EasyAlign */\t\+/' | endif
   elseif executable('odt2txt')
@@ -180,7 +180,7 @@ function! s:doc()
   elseif executable('wvHtml') && exists('s:browser')
     silent exe '%!wvText ' . expand('%:p:S') . ' | ' . s:browser
   elseif executable('tika')
-    silent %!tika --encoding=UTF-8 --detect --text -'
+    silent exe '%!tika --encoding=UTF-8 --detect --text ' . expand('%:p:S')
     setlocal fileencoding=utf-8
   elseif executable('soffice')
     silent %!soffice --cat %:p:S
@@ -203,7 +203,7 @@ function! s:docx()
   elseif executable('docx2txt.pl')
     silent %!docx2txt.pl -'
   elseif executable('tika')
-    silent %!tika --encoding=UTF-8 --detect --text -
+    silent exe '%!tika --encoding=UTF-8 --detect --text ' . expand('%:p:S')
     setlocal fileencoding=utf-8
   elseif executable('soffice')
     silent %!soffice --cat %:p:S
@@ -249,7 +249,7 @@ function! s:xls()
     silent exe '%!tika --encoding=UTF-8 --detect --html ' . expand('%:p:S') . ' | ' . s:browser
     setlocal fileencoding=utf-8
   elseif executable('tika')
-    silent %!tika --encoding=UTF-8 --detect --text -
+    silent exe '%!tika --encoding=UTF-8 --detect --text ' . expand('%:p:S')
     setlocal fileencoding=utf-8
     if exists(':EasyAlign') == 2 | exe '%EasyAlign */\t\+/' | endif
   endif
@@ -292,7 +292,7 @@ function! s:xlsx()
     setlocal fileencoding=utf-8
     if exists(':EasyAlign') == 2 | exe '%EasyAlign */\t\+/' | endif
   elseif executable('tika')
-    silent %!tika --encoding=UTF-8 --detect --text -'
+    silent exe '%!tika --encoding=UTF-8 --detect --text ' . expand('%:p:S')
     setlocal fileencoding=utf-8
     if exists(':EasyAlign') == 2 | exe '%EasyAlign */\t\+/' | endif
     setlocal filetype=text
@@ -316,7 +316,7 @@ function! s:ppt()
     silent exe '%!tika --encoding=UTF-8 --detect --html ' . expand('%:p:S') . ' | ' . s:browser
     setlocal fileencoding=utf-8
   elseif executable('tika')
-    silent %!tika --encoding=UTF-8 --detect --text -
+    silent exe '%!tika --encoding=UTF-8 --detect --text ' . expand('%:p:S')
     setlocal fileencoding=utf-8
   elseif executable('soffice') && exists('s:browser')
     silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:browser . ' ' . s:tmpdir . s:slash . expand('%:t:r:S') . '.html'
