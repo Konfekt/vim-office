@@ -1,7 +1,5 @@
 This plug-in enables Vim to read text documents of type `PDF`, `Microsoft Office` such as `Word` (`doc(x)`), `Excel` (`xls(x)`) or `Powerpoint` (`ppt(x)`), Open Document (`odt`), `EPUB` ....
-[To go even further, for example, to read, among many others file formats, media files in Vim, add this [Vimscript  snippet](https://github.com/wofr06/lesspipe/wiki/vim) from the Wiki for [lesspipe.sh](https://github.com/wofr06/lesspipe/) to your `vimrc`!]
-
-For the text extraction, it depends on external tools, but most use cases are covered by an installation of
+The text extraction depends on external tools, but most use cases are covered by an installation of
 
   - `LibreOffice` and a common text browser (such as `lynx`), and
   - `pdftotext`.
@@ -45,3 +43,9 @@ It uses, whenever available, appropriate external converters such as [unrtf](htt
 
 For the (English) text extraction of common image files of common formats, it uses `tesseract` whenever its executable is found, available [on Microsoft Windows](https://github.com/UB-Mannheim/tesseract/wiki) and [Linux](https://github.com/tesseract-ocr/tesseract/releases).
 On Microsoft Windows, ensure after its installation that the path of the folder containing its executable, by default `%ProgramFiles%\Tesseract-OCR`, is added to the `%PATH%` environment variable.
+
+# Other (media) file formats
+
+
+To go even further, for example, to read, among many others file formats, media files in Vim, add this [Vimscript  snippet](https://github.com/wofr06/lesspipe/wiki/vim) from [lesspipe.sh](https://github.com/wofr06/lesspipe/) to your `vimrc`!
+
