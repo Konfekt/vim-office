@@ -376,6 +376,17 @@ else
     doautocmd zip BufReadCmd
   endif
 endif
+
+if executable('tesseract')
+  " TODO: convert 2-character v:lang to 3-character ISO 639-2 language code
+  " by list from https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+  " and check whether it is in systemlist('tesseract --list-langs').
+  " Then pass to tesseract by appending '-l eng' . '+' . lang
+  autocmd BufReadPost *.{{jpg,jpeg},png,gif,{tif,tiff},webp,heif,raw,bmp,psd,indd}
+        \ silent exe '%!tesseract -c debug_file=/dev/null ' . expand('%:p:S') . ' -' |
+        \ setlocal fileencoding=utf-8 |
+        \ setlocal filetype=text nomodifiable readonly 
+endif
 " }}}
 
 " ------------------------------------------------------------------------------

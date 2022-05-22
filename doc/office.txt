@@ -14,13 +14,19 @@ covered by an installation of
 - LibreOffice and a common text browser (such as `lynx`), and
 - pdftotext.
 
+===========================================================================
+1. Extractors ~
+                                                        *office-extractors*
+
 It uses, whenever available, appropriate external converters such as pandoc,
 odt2txt, docx2txt.pl, xlscat, xlsx2csv, pptx2md, ..., but will fall back to:
 
 - Either LibreOffice which is an office suite that (together with a common text
   browser such as lynx) can handle all those formats listed above, except PDFs.
-  (To use it on Microsoft Windows, ensure after its installation that its path
-  is added to the %PATH% environment variable, say by Rapidee.)
+  On Microsoft Windows, ensure after its installation that the path of the
+  folder containing the executable, by default
+  `%ProgramFiles%\LibreOffice\program` is added to the %PATH% environment
+  variable.
 
 - Or Tika which is a content extractor that can handle all those formats listed
   above and many more. To use it:
@@ -57,3 +63,14 @@ odt2txt, docx2txt.pl, xlscat, xlsx2csv, pptx2md, ..., but will fall back to:
       - on Microsoft Windows, a convenient program to update %PATH% is
         Rapidee.
 
+===========================================================================
+2. OCR ~
+                                                              *office-ocr*
+
+For the (English) text extraction of common image files of common formats, it
+uses `tesseract` whenever its executable is found. On Microsoft Windows,
+ensure after its installation that the path of the folder containing its
+executable, by default `%ProgramFiles%\Tesseract-OCR`, is added to the
+`%PATH%` environment variable.
+
+vim:tw=78:ts=2:sts=2:sw=2:ft=help:norl

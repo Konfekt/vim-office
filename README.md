@@ -6,11 +6,12 @@ For the text extraction, it depends on external tools, but most use cases are co
   - `LibreOffice` and a common text browser (such as `lynx`), and
   - `pdftotext`.
 
+# Extractors
+
 It uses, whenever available, appropriate external converters such as [unrtf](http://ftp.gnu.org/gnu/unrtf/), [pandoc](http://pandoc.org), [docx2txt.pl](https://github.com/arthursucks/docx2txt), [odt2txt](https://github.com/dstosberg/odt2txt), [xlscat](https://github.com/Tux/Spreadsheet-Read/tree/master/scripts), [xlsx2csv.py](https://github.com/dilshod/xlsx2csv) or [pptx2md](https://github.com/ssine/pptx2md) ..., but will fall back to:
 
 - Either [LibreOffice](https://www.libreoffice.org/download/download/) which is an office suite that (together with a common text browser such as `lynx`) can handle all those formats listed above, except `PDF`s.
-    (To use it on Microsoft Windows, ensure after its installation that its path is added to the `%PATH%` environment variable, say by [Rapidee](http://www.rapidee.com/).)
-- Or [Tika](https://tika.apache.org/download.html) which is a content extractor that can handle all those formats listed above and many more.
+    (On Microsoft Windows, ensure after its installation that the path of the folder containing the executable, by default `%ProgramFiles%\LibreOffice\program`, is added to the `%PATH%` environment variable.
     To use it:
 
     1. Download the latest runnable `tika-app-...jar` from [Tika](https://tika.apache.org/download.html) to `~/bin/tika.jar` (on Linux) respectively `%USERPROFILE%\bin` (on Microsoft Windows).
@@ -40,3 +41,7 @@ It uses, whenever available, appropriate external converters such as [unrtf](htt
 
         - on Microsoft Windows, a convenient program to update `%PATH%` is [Rapidee](http://www.rapidee.com/).
 
+# OCR
+
+For the (English) text extraction of common image files of common formats, it uses `tesseract` whenever its executable is found, available [on Microsoft Windows](https://github.com/UB-Mannheim/tesseract/wiki) and [Linux](https://github.com/tesseract-ocr/tesseract/releases).
+On Microsoft Windows, ensure after its installation that the path of the folder containing its executable, by default `%ProgramFiles%\Tesseract-OCR`, is added to the `%PATH%` environment variable.
