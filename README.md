@@ -44,6 +44,15 @@ It uses, whenever available, appropriate external converters such as [unrtf](htt
 For the (English) text extraction of common image files of common formats, it uses `tesseract` whenever its executable is found, available [on Microsoft Windows](https://github.com/UB-Mannheim/tesseract/wiki) and [Linux](https://github.com/tesseract-ocr/tesseract/releases).
 On Microsoft Windows, ensure after its installation that the path of the folder containing its executable, by default `%ProgramFiles%\Tesseract-OCR`, is added to the `%PATH%` environment variable.
 
+Pass additional command-line options to `tesseract` by `g:office_tesseract`
+(left empty by default), for example
+
+```
+  let g:office_tesseract = '-l eng+ita'
+```
+
+to properly extract Italian words (as well as English ones).
+
 # Other (media) file formats
 
 

@@ -71,6 +71,13 @@ ensure after its installation that the path of the folder containing its
 executable, by default `%ProgramFiles%\Tesseract-OCR`, is added to the
 `%PATH%` environment variable.
 
+Pass additional command-line options to `tesseract` by *g:office_tesseract*
+(left empty by default), for example
+
+  let g:office_tesseract = '-l eng+ita'
+
+to properly extract Italian words (as well as English ones).
+
 ===========================================================================
 3. Media Files ~
                                                               *office-media*
