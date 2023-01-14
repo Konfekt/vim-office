@@ -58,3 +58,6 @@ to properly extract Italian words (as well as English ones).
 
 To go even further, for example, to read, among many others file formats, media files in Vim, add this [Vimscript  snippet](https://github.com/wofr06/lesspipe/wiki/vim) from [lesspipe.sh](https://github.com/wofr06/lesspipe/) to your `vimrc`!
 
+# Related
+
+This [answer](https://vi.stackexchange.com/questions/554/is-it-possible-to-easily-work-with-odt-doc-docx-rtf-and-other-non-plain?rq=1) shows how this plug-in works in principle, and refers to [vim-util](https://github.com/vim-scripts/textutil.vim) as an alternative implementation for some word document formats using the `textutil` command on `Mac OS` that also allows to write the text edited in `Vim`.
