@@ -230,13 +230,13 @@ function! s:xls()
   elseif executable('xlscat')
     silent %!xlscat %:p:S
     if exists(':EasyAlign') == 2 | exe '%EasyAlign*|' | exe '%EasyAlign */│\+/' | endif
-  " " Perl version of xls2csv = Wrapper for xlscat
-  " elseif executable('xls2csv')
-  "   let in = expand('%:p:S')
-  "   let out = s:tmpdir . s:slash . expand('%:t:r:S')
-  "   silent exe '%!xls2csv -q -a UTF-8 -b WINDOWS-1252 -x ' . in . ' -c ' . out . ' > ' . s:nul . ' && ' . s:cat . ' ' . out
-  "   if exists(':EasyAlign') == 2 | exe '%EasyAlign*,' | endif
-  "   setlocal filetype=csv
+  " Perl version of xls2csv = Wrapper for xlscat
+  elseif executable('xls2csv')
+    let in = expand('%:p:S')
+    let out = s:tmpdir . s:slash . expand('%:t:r:S')
+    silent exe '%!xls2csv -q -a UTF-8 -b WINDOWS-1252 -x ' . in . ' -c ' . out . ' > ' . s:nul . ' && ' . s:cat . ' ' . out
+    if exists(':EasyAlign') == 2 | exe '%EasyAlign*,' | endif
+    setlocal filetype=csv
   elseif executable('excel2csv')
     silent exe '%!excel2csv --trim ' . expand('%:p:S')
     if exists(':EasyAlign') == 2 | exe '%EasyAlign*,' | endif
@@ -272,13 +272,6 @@ function! s:xlsx()
     silent exe '%!xlscat -e ' . &encoding . ' %:p:S'
     " take account of unicode homoglyph │ instead of |
     if exists(':EasyAlign') == 2 | exe '%EasyAlign*|' | exe '%EasyAlign */│\+/' | endif
-  " " Perl version of xls2csv = Wrapper for xlscat
-  " elseif executable('xls2csv')
-  "   let in = expand('%:p:S')
-  "   let out = s:tmpdir . s:slash . expand('%:t:r:S')
-  "   silent exe '%!xls2csv -q -a UTF-8 -b WINDOWS-1252 -x ' . in . ' -c ' . out . ' > ' . s:nul . ' && ' . s:cat . ' ' . out
-  "   if exists(':EasyAlign') == 2 | exe '%EasyAlign*,' | endif
-  "   setlocal filetype=csv
   elseif executable('excel2csv')
     silent %!excel2csv %:p:S
     if exists(':EasyAlign') == 2 | exe '%EasyAlign*,' | endif 
