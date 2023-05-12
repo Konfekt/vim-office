@@ -262,8 +262,8 @@ endfunction
 autocmd BufReadPost *.xl{s,t}{x,m,b} call s:xlsx()
 function! s:xlsx()
   " Python version of xls2csv
-  if executable('xls2csv.py')
-    silent %!xls2csv.py %:p:S
+  if executable('xlsx2csv.py')
+    silent %!xlsx2csv.py %:p:S
     if exists(':EasyAlign') == 2 | exe '%EasyAlign*,' | endif 
     setlocal filetype=csv
   elseif executable('xlscat')
