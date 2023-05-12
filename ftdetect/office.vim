@@ -6,6 +6,8 @@ let g:loaded_office = 1
 let s:keepcpo         = &cpo
 set cpo&vim
 
+scriptencoding utf-8
+
 let s:slash  = exists('+shellslash') && !&shellslash ? '\' : '/'
 let s:tmpdir = has('win32') ? $TMP : $TMPDIR
 let s:cat    = has('win32') ? 'type' : 'cat'
@@ -267,7 +269,7 @@ function! s:xlsx()
     if exists(':EasyAlign') == 2 | exe '%EasyAlign*,' | endif 
     setlocal filetype=csv
   elseif executable('xlscat')
-    silent %!xlscat %:p:S
+    silent exe '%!xlscat -e ' . &encoding . ' %:p:S'
     " take account of unicode homoglyph │ instead of |
     if exists(':EasyAlign') == 2 | exe '%EasyAlign*|' | exe '%EasyAlign */│\+/' | endif
   " " Perl version of xls2csv = Wrapper for xlscat
