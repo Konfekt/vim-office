@@ -1,4 +1,4 @@
-This plug-in enables Vim to read text documents of type `PDF`, `Microsoft Office` such as `Word` (`doc(x)`), `Excel` (`xls(x)`) or `Powerpoint` (`ppt(x)`), Open Document (`odt`), `EPUB` ....
+This plug-in lets Vim read text documents of type `PDF`, `Microsoft Office` such as `Word` (`doc(x)`), `Excel` (`xls(x)`) or `Powerpoint` (`ppt(x)`), Open Document (`odt`), `EPUB` ....
 The text extraction depends on external tools, but most use cases are covered by an installation of
 
   - `LibreOffice` and a common text browser (such as `lynx`), and
@@ -10,6 +10,7 @@ It uses, whenever available, appropriate external converters such as [unrtf](htt
 
 - Either [LibreOffice](https://www.libreoffice.org/download/download/) which is an office suite that (together with a common text browser such as `lynx`) can handle all those formats listed above, except `PDF`s.
     (On Microsoft Windows, ensure after its installation that the path of the folder containing the executable, by default `%ProgramFiles%\LibreOffice\program`, is added to the `%PATH%` environment variable.
+- Or [Tika](https://tika.apache.org/download.html) which is a content extractor that can handle all those formats listed above and many more.
     To use it:
 
     1. Download the latest runnable `tika-app-...jar` from [Tika](https://tika.apache.org/download.html) to `~/bin/tika.jar` (on Linux) respectively `%USERPROFILE%\bin` (on Microsoft Windows).
