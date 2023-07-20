@@ -140,6 +140,8 @@ function! s:ods()
     silent exe '%!tika --encoding=UTF-8 --detect --text ' . expand('%:p:S')
     setlocal fileencoding=utf-8
     if exists(':EasyAlign') == 2 | exe '%EasyAlign */\t\+/' | endif
+    " show tab stops
+    setlocal tabstop=8 nowrap list listchars=eol:\ ,tab:»-
   elseif executable('odt2txt')
     silent %!odt2txt --encoding=UTF-8 %:p:S
     setlocal fileencoding=utf-8
@@ -254,6 +256,8 @@ function! s:xls()
     silent exe '%!tika --encoding=UTF-8 --detect --text ' . expand('%:p:S')
     setlocal fileencoding=utf-8
     if exists(':EasyAlign') == 2 | exe '%EasyAlign */\t\+/' | endif
+    " show tab stops
+    setlocal tabstop=8 nowrap list listchars=eol:\ ,tab:»-
   endif
   setlocal nowrap
   setlocal nomodifiable readonly
@@ -268,7 +272,10 @@ function! s:xlsx()
     silent %!xlsx2csv.py --delimiter x09 --outputencoding utf-8 %:p:S
     setlocal fileencoding=utf-8
     if has('unix') | set fileformat=unix | endif
-    if exists(':EasyAlign') == 2 | exe '%EasyAlign*t' | endif
+    if exists(':EasyAlign') == 2 | exe '%EasyAlign */\t\+/' | endif
+    " show tab stops
+    setlocal tabstop=8 nowrap list listchars=eol:\ ,tab:»-
+    " mute error message
     setlocal filetype=tsv
   elseif executable('xlscat')
     silent exe '%!xlscat -e ' . &encoding . ' %:p:S'
@@ -288,10 +295,14 @@ function! s:xlsx()
     silent exe '%!tika --encoding=UTF-8 --detect --html ' . expand('%:p:S') . ' | ' . s:browser
     setlocal fileencoding=utf-8
     if exists(':EasyAlign') == 2 | exe '%EasyAlign */\t\+/' | endif
+    " show tab stops
+    setlocal tabstop=8 nowrap list listchars=eol:\ ,tab:»-
   elseif executable('tika')
     silent exe '%!tika --encoding=UTF-8 --detect --text ' . expand('%:p:S')
     setlocal fileencoding=utf-8
     if exists(':EasyAlign') == 2 | exe '%EasyAlign */\t\+/' | endif
+    " show tab stops
+    setlocal tabstop=8 nowrap list listchars=eol:\ ,tab:»-
     setlocal filetype=text
   else
     let exts = '*.xlsx,*.xlsm,*.xlsb'
