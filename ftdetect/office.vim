@@ -128,9 +128,9 @@ endfunction
 autocmd BufReadPost *.ods call s:ods()
 function! s:ods()
   if executable('soffice') && exists('s:browser')
-    silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:browser . ' ' . s:tmpdir . s:slash . expand('%:t:r:S') . '.html' 
+    silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:browser . ' ' . s:tmpdir . s:slash . expand('%:t:r:S') . '.html'
   elseif executable('soffice')
-    silent exe '%!soffice --headless --convert-to csv --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . s:slash . expand('%:t:r:S') . '.csv' 
+    silent exe '%!soffice --headless --convert-to csv --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . s:slash . expand('%:t:r:S') . '.csv'
     if exists(':EasyAlign') == 2 | exe '%EasyAlign*,' | endif
     setlocal filetype=csv
   elseif executable('tika') && exists('s:browser')
@@ -157,7 +157,7 @@ function! s:odp()
   elseif executable('soffice')
     silent %!soffice --cat %:p:S
     setlocal filetype=text
-  elseif executable('tika') && exists('s:browser') 
+  elseif executable('tika') && exists('s:browser')
     silent exe '%!tika --encoding=UTF-8 --detect --html ' . expand('%:p:S') . ' | ' . s:browser
     setlocal fileencoding=utf-8
     setlocal filetype=text
@@ -242,9 +242,9 @@ function! s:xls()
     if exists(':EasyAlign') == 2 | exe '%EasyAlign*,' | endif
     setlocal filetype=csv
   elseif executable('soffice') && exists('s:browser')
-    silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:browser . ' ' . s:tmpdir . s:slash . expand('%:t:r:S') . '.html' 
+    silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:browser . ' ' . s:tmpdir . s:slash . expand('%:t:r:S') . '.html'
   elseif executable('soffice')
-    silent exe '%!soffice --headless --convert-to csv --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . s:slash . expand('%:t:r:S') . '.csv' 
+    silent exe '%!soffice --headless --convert-to csv --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:cat . ' ' . s:tmpdir . s:slash . expand('%:t:r:S') . '.csv'
     if exists(':EasyAlign') == 2 | exe '%EasyAlign*,' | endif
     setlocal filetype=csv
   elseif executable('tika') && exists('s:browser')
@@ -265,16 +265,18 @@ autocmd BufReadPost *.xl{s,t}{x,m,b} call s:xlsx()
 function! s:xlsx()
   " Python version of xls2csv
   if executable('xlsx2csv.py')
-    silent %!xlsx2csv.py %:p:S
-    if exists(':EasyAlign') == 2 | exe '%EasyAlign*,' | endif 
-    setlocal filetype=csv
+    silent %!xlsx2csv.py --delimiter x09 --outputencoding utf-8 %:p:S
+    setlocal fileencoding=utf-8
+    if has('unix') | set fileformat=unix | endif
+    if exists(':EasyAlign') == 2 | exe '%EasyAlign*t' | endif
+    setlocal filetype=tsv
   elseif executable('xlscat')
     silent exe '%!xlscat -e ' . &encoding . ' %:p:S'
     " take account of unicode homoglyph │ instead of |
     if exists(':EasyAlign') == 2 | exe '%EasyAlign*|' | exe '%EasyAlign */│\+/' | endif
   elseif executable('excel2csv')
     silent %!excel2csv %:p:S
-    if exists(':EasyAlign') == 2 | exe '%EasyAlign*,' | endif 
+    if exists(':EasyAlign') == 2 | exe '%EasyAlign*,' | endif
     setlocal filetype=csv
   elseif executable('soffice') && exists('s:browser')
     silent exe '%!soffice --headless --convert-to html --outdir ' s:tmpdir . ' ' . expand('%:p:S') . ' > ' . s:nul . ' && ' . s:browser . ' ' . s:tmpdir . s:slash . expand('%:t:r:S') . '.html'
@@ -307,7 +309,7 @@ endfunction
 " {{{ PPT
 autocmd BufReadPost *.pp{s,t} call s:ppt()
 function! s:ppt()
-  if executable('tika') && exists('s:browser') 
+  if executable('tika') && exists('s:browser')
     silent exe '%!tika --encoding=UTF-8 --detect --html ' . expand('%:p:S') . ' | ' . s:browser
     setlocal fileencoding=utf-8
   elseif executable('tika')
@@ -332,7 +334,7 @@ function! s:pptx()
     let output_file = s:tmpdir . s:slash . expand('%:t:r:S') . '.md'
     silent exe '%!pptx2md --disable_image --disable_wmf ' . expand('%:p:S') . ' -o ' . output_file . ' > ' . s:nul . ' && ' . s:cat . ' ' output_file
     setlocal filetype=markdown foldmethod=expr foldexpr=MarkdownFold()
-  elseif executable('tika') && exists('s:browser') 
+  elseif executable('tika') && exists('s:browser')
     silent exe '%!tika --encoding=UTF-8 --detect --html ' . expand('%:p:S') . ' | ' . s:browser
     setlocal fileencoding=utf-8
     setlocal filetype=text
@@ -362,7 +364,7 @@ if executable('tika')
   autocmd BufReadPost *.{{rar,7z},{class,ja,jar},chm,{mdb,accdb},{pst,msg},mht{,ml}}
         \ silent exe '%!tika --encoding=UTF-8 --detect --text ' . expand('%:p:S') |
         \ setlocal fileencoding=utf-8 |
-        \ setlocal filetype=text nomodifiable readonly 
+        \ setlocal filetype=text nomodifiable readonly
 else
   let exts = '*.ja,*.jar'
   let g:zipPlugin_ext .= ',' .  exts
@@ -380,7 +382,7 @@ if executable('tesseract')
   autocmd BufReadPost *.{{jpg,jpeg},png,gif,{tif,tiff},webp,heif,raw,bmp,psd,indd}
         \ silent exe '%!tesseract ' . get(g:, 'office_tesseract', '') . ' -c debug_file=' . s:nul . ' ' . expand('%:p:S') . ' -' |
         \ setlocal fileencoding=utf-8 |
-        \ setlocal filetype=text nomodifiable readonly 
+        \ setlocal filetype=text nomodifiable readonly
 endif
 " }}}
 
@@ -388,4 +390,4 @@ endif
 let &cpo= s:keepcpo
 unlet s:keepcpo
 
-" ex: set foldmethod=marker: 
+" ex: set foldmethod=marker:
