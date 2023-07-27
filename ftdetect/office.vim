@@ -206,6 +206,9 @@ function! s:docx()
     setlocal fileencoding=utf-8
   elseif executable('docx2txt.pl')
     silent %!docx2txt.pl -'
+  elseif executable('docx2txt')
+    " python version
+    %!docx2txt %:p:S
   elseif executable('tika')
     silent exe '%!tika --encoding=UTF-8 --detect --text ' . expand('%:p:S')
     setlocal fileencoding=utf-8
