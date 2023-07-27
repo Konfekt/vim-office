@@ -267,9 +267,8 @@ endfunction
 " {{{ XLSX
 autocmd BufReadPost *.xl{s,t}{x,m,b} call s:xlsx()
 function! s:xlsx()
-  " Python version of xls2csv
-  if executable('xlsx2csv.py')
-    silent %!xlsx2csv.py --delimiter x09 --outputencoding utf-8 %:p:S
+  if executable('xlsx2csv')
+    silent %!xlsx2csv --delimiter x09 --outputencoding utf-8 %:p:S
     setlocal fileencoding=utf-8
     if has('unix') | set fileformat=unix | endif
     if exists(':EasyAlign') == 2 | exe '%EasyAlign */\t\+/' | endif
