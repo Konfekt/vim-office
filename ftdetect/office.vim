@@ -271,7 +271,7 @@ endfunction
 autocmd BufReadPost *.xl{s,t}{x,m,b} call s:xlsx()
 function! s:xlsx()
   if executable('xlsx2csv')
-    silent %!xlsx2csv --delimiter x09 --outputencoding utf-8 %:p:S
+    silent %!xlsx2csv --all --delimiter x09 --outputencoding utf-8 %:p:S
     setlocal fileencoding=utf-8
     if has('unix') | set fileformat=unix | endif
     if exists(':EasyAlign') == 2 | exe '%EasyAlign */\t\+/' | endif
@@ -280,7 +280,7 @@ function! s:xlsx()
     " mute error message
     setlocal filetype=tsv
   elseif executable('xlscat')
-    silent exe '%!xlscat -e ' . &encoding . ' %:p:S'
+    silent exe '%!xlscat -S all -e ' . &encoding . ' %:p:S'
     " take account of unicode homoglyph │ instead of |
     if exists(':EasyAlign') == 2 | exe '%EasyAlign*|' | exe '%EasyAlign */│\+/' | endif
   elseif executable('excel2csv')
