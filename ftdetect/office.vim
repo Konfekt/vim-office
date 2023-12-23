@@ -242,6 +242,10 @@ function! s:xls()
     silent exe '%!xls2csv -q -a UTF-8 -b WINDOWS-1252 -x ' . in . ' -c ' . out . ' > ' . s:nul . ' && ' . s:cat . ' ' . out
     if exists(':EasyAlign') == 2 | exe '%EasyAlign*,' | endif
     setlocal filetype=csv
+  elseif executable('in2csv')
+    silent exe '%!in2csv -f xls --write-sheets -e ' . &encoding . ' %:p:S'
+    " take account of unicode homoglyph │ instead of |
+    if exists(':EasyAlign') == 2 | exe '%EasyAlign*,' | endif
   elseif executable('excel2csv')
     silent exe '%!excel2csv --trim ' . expand('%:p:S')
     if exists(':EasyAlign') == 2 | exe '%EasyAlign*,' | endif
@@ -283,6 +287,10 @@ function! s:xlsx()
     silent exe '%!xlscat -S all -e ' . &encoding . ' %:p:S'
     " take account of unicode homoglyph │ instead of |
     if exists(':EasyAlign') == 2 | exe '%EasyAlign*|' | exe '%EasyAlign */│\+/' | endif
+  elseif executable('in2csv')
+    silent exe '%!in2csv -f xlsx --write-sheets -e ' . &encoding . ' %:p:S'
+    " take account of unicode homoglyph │ instead of |
+    if exists(':EasyAlign') == 2 | exe '%EasyAlign*,' | endif
   elseif executable('excel2csv')
     silent %!excel2csv %:p:S
     if exists(':EasyAlign') == 2 | exe '%EasyAlign*,' | endif
