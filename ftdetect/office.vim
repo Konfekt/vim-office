@@ -177,7 +177,7 @@ endfunction
 " }}}
 
 " {{{ DOC
-autocmd BufReadPost *.do{c,t} call s:doc()
+autocmd BufReadPost *.doc call s:doc()
 function! s:doc()
   if executable('wvText')
     silent %!wvText %:p:S
