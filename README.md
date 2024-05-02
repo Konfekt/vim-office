@@ -63,7 +63,7 @@ To go even further, for example, to read, among many others file formats, media 
 To convert a file to markdown, add the following command to your `vimrc` and run `:PandocToMarkdown` inside the buffer of the opened file:
 
 ```vim
-  command! -range=% PandocToMarkdown exe 'set modifiable|<line1>,<line2>!pandoc --wrap=preserve --from='..PandocFiletype(&l:filetype)..'--to markdown'
+  command! -range=% PandocToMarkdown exe '<line1>,<line2>!pandoc --wrap=preserve --from='..PandocFiletype(&l:filetype)..'--to markdown %:S'
   function! PandocFiletype(filetype) abort
     if a:filetype ==# 'tex'
       return 'latex'

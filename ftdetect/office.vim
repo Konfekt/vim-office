@@ -47,7 +47,8 @@ function! s:pdf()
     silent exe '%!tika --encoding=UTF-8 --detect --text ' . expand('%:p:S')
     setlocal fileencoding=utf-8
   endif
-  setlocal nomodifiable readonly
+  setlocal readonly buftype=nowrite
+  let b:undo_ftplugin = exists('b:undo_ftplugin') ? b:undo_ftplugin..'|' : '' .. 'setl readonly< buftype<'
   setlocal filetype=text
 endfunction
 " }}}
@@ -59,8 +60,9 @@ function! s:djvu()
     silent %!djvutxt %:p:S -
     setlocal fileencoding=utf-8
   endif
-  setlocal nomodifiable readonly
+  setlocal readonly buftype=nowrite
   setlocal filetype=text
+  let b:undo_ftplugin = exists('b:undo_ftplugin') ? b:undo_ftplugin..'|' : '' .. 'setl readonly< buftype<'
 endfunction
 " }}}
 
@@ -74,7 +76,7 @@ function! s:epub()
     silent exe '%!tika --encoding=UTF-8 --detect --text ' . expand('%:p:S')
     setlocal fileencoding=utf-8
   endif
-  setlocal nomodifiable readonly
+  setlocal readonly buftype=nowrite
   setlocal filetype=text
   let exts = '*.epub'
   let g:zipPlugin_ext .= ',' .  exts
@@ -82,6 +84,7 @@ function! s:epub()
     exe 'au zip BufReadCmd ' . exts . ' call zip#Browse(expand("<amatch>"))'
     doautocmd zip BufReadCmd
   endif
+  let b:undo_ftplugin = exists('b:undo_ftplugin') ? b:undo_ftplugin..'|' : '' .. 'setl readonly< buftype<'
 endfunction
 " }}}
 
@@ -96,7 +99,8 @@ function! s:rtf()
   elseif executable('soffice')
     silent %!soffice --cat %:p:S
   endif
-  setlocal nomodifiable readonly
+  setlocal readonly buftype=nowrite
+  let b:undo_ftplugin = exists('b:undo_ftplugin') ? b:undo_ftplugin..'|' : '' .. 'setl readonly< buftype<'
   setlocal filetype=text
 endfunction
 " }}}
@@ -119,8 +123,9 @@ function! s:odt()
   elseif executable('soffice')
     silent %!soffice --cat %:p:S
   endif
-  setlocal nomodifiable readonly
+  setlocal readonly buftype=nowrite
   setlocal filetype=text
+  let b:undo_ftplugin = exists('b:undo_ftplugin') ? b:undo_ftplugin..'|' : '' .. 'setl readonly< buftype<'
 endfunction
 " }}}
 
@@ -147,7 +152,8 @@ function! s:ods()
     setlocal fileencoding=utf-8
   endif
   setlocal nowrap
-  setlocal nomodifiable readonly
+  setlocal readonly buftype=nowrite
+  let b:undo_ftplugin = exists('b:undo_ftplugin') ? b:undo_ftplugin..'|' : '' .. 'setl wrap< readonly< buftype<'
 endfunction
 " }}}
 
@@ -172,7 +178,8 @@ function! s:odp()
     setlocal fileencoding=utf-8
     setlocal filetype=text
   endif
-  setlocal nomodifiable readonly
+  setlocal readonly buftype=nowrite
+  let b:undo_ftplugin = exists('b:undo_ftplugin') ? b:undo_ftplugin..'|' : '' .. 'setl readonly< buftype<'
 endfunction
 " }}}
 
@@ -193,7 +200,8 @@ function! s:doc()
   elseif executable('antiword')
     silent %!antiword %:p:S
   endif
-  setlocal nomodifiable readonly
+  setlocal readonly buftype=nowrite
+  let b:undo_ftplugin = exists('b:undo_ftplugin') ? b:undo_ftplugin..'|' : '' .. 'setl readonly< buftype<'
   setlocal filetype=text
 endfunction
 " }}}
@@ -227,7 +235,8 @@ function! s:docx()
       doautocmd zip BufReadCmd
     endif
   endif
-  setlocal nomodifiable readonly
+  setlocal readonly buftype=nowrite
+  let b:undo_ftplugin = exists('b:undo_ftplugin') ? b:undo_ftplugin..'|' : '' .. 'setl readonly< buftype<'
 endfunction
 " }}}
 
@@ -271,7 +280,8 @@ function! s:xls()
     setlocal tabstop=8 nowrap list listchars=eol:\ ,tab:»-
   endif
   setlocal nowrap
-  setlocal nomodifiable readonly
+  setlocal readonly buftype=nowrite
+  let b:undo_ftplugin = exists('b:undo_ftplugin') ? b:undo_ftplugin..'|' : '' .. 'setl readonly< buftype<'
 endfunction
 " }}}
 
@@ -327,7 +337,8 @@ function! s:xlsx()
     endif
   endif
   setlocal nowrap
-  setlocal nomodifiable readonly
+  setlocal readonly buftype=nowrite
+  let b:undo_ftplugin = exists('b:undo_ftplugin') ? b:undo_ftplugin..'|' : '' .. 'setl wrap< readonly< buftype<'
 endfunction
 " }}}
 
@@ -347,7 +358,8 @@ function! s:ppt()
   elseif executable('catppt')
     silent %!catppt %:p:S
   endif
-  setlocal nomodifiable readonly
+  setlocal readonly buftype=nowrite
+  let b:undo_ftplugin = exists('b:undo_ftplugin') ? b:undo_ftplugin..'|' : '' .. 'setl readonly< buftype<'
   setlocal filetype=text
 endfunction
 " }}}
@@ -359,6 +371,7 @@ function! s:pptx()
     let output_file = s:tmpdir . s:slash . expand('%:t:r:S') . '.md'
     silent exe '%!pptx2md --disable-image --disable-wmf --disable-color --disable-escaping ' . expand('%:p:S') . ' -o ' . output_file . ' > ' . s:nul . ' && ' . s:cat . ' ' output_file
     setlocal filetype=markdown foldmethod=expr foldexpr=MarkdownFold()
+    let b:undo_ftplugin = exists('b:undo_ftplugin') ? b:undo_ftplugin..'|' : '' .. 'setl fdm< fde<'
   elseif executable('tika') && exists('s:browser')
     silent exe '%!tika --encoding=UTF-8 --detect --html ' . expand('%:p:S') . ' | ' . s:browser
     setlocal fileencoding=utf-8
@@ -380,7 +393,8 @@ function! s:pptx()
       doautocmd zip BufReadCmd
     endif
   endif
-  setlocal nomodifiable readonly
+  setlocal readonly buftype=nowrite
+  let b:undo_ftplugin = exists('b:undo_ftplugin') ? b:undo_ftplugin..'|' : '' .. 'setl readonly< buftype<'
 endfunction
 " }}}
 
@@ -389,7 +403,8 @@ if executable('tika')
   autocmd BufReadPost *.{{rar,7z},{class,ja,jar},chm,{mdb,accdb},{pst,msg},mht{,ml}}
         \ silent exe '%!tika --encoding=UTF-8 --detect --text ' . expand('%:p:S') |
         \ setlocal fileencoding=utf-8 |
-        \ setlocal filetype=text nomodifiable readonly
+        \ setlocal filetype=text readonly buftype=nowrite
+        \ let b:undo_ftplugin = exists('b:undo_ftplugin') ? b:undo_ftplugin..'|' : '' .. 'setl readonly< buftype<'
 else
   let exts = '*.ja,*.jar'
   let g:zipPlugin_ext .= ',' .  exts
@@ -407,8 +422,11 @@ if executable('tesseract')
   autocmd BufReadPost *.{{jpg,jpeg},png,gif,{tif,tiff},webp,heif,raw,bmp,psd,indd}
         \ silent exe '%!tesseract ' . get(g:, 'office_tesseract', '') . ' -c debug_file=' . s:nul . ' ' . expand('%:p:S') . ' -' |
         \ setlocal fileencoding=utf-8 |
-        \ setlocal filetype=text nomodifiable readonly
+        \ setlocal filetype=text readonly buftype=nowrite
+        \ let b:undo_ftplugin = exists('b:undo_ftplugin') ? b:undo_ftplugin..'|' : '' .. 'setl readonly< buftype<'
 endif
+
+
 " }}}
 
 " ------------------------------------------------------------------------------
