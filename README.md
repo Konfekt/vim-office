@@ -56,8 +56,27 @@ to properly extract Italian words (as well as English ones).
 
 # Other (media) file formats
 
-
 To go even further, for example, to read, among many others file formats, media files in Vim, add this [Vimscript  snippet](https://github.com/wofr06/lesspipe/wiki/vim) from [lesspipe.sh](https://github.com/wofr06/lesspipe/) to your `vimrc`!
+
+# Pandoc
+
+To convert a file to markdown, add the following command to your `vimrc` and run `:PandocToMarkdown` inside the buffer of the opened file:
+
+```vim
+  command! -range=% PandocToMarkdown exe 'set modifiable|<line1>,<line2>!pandoc --wrap=preserve --from='..PandocFiletype(&l:filetype)..'--to markdown'
+  function! PandocFiletype(filetype) abort
+    if a:filetype ==# 'tex'
+      return 'latex'
+    elseif a:filetype ==# 'pandoc'
+      return 'markdown'
+    elseif a:filetype ==# 'text' || empty(a:filetype)
+      return expand('%:e')
+    else
+      return a:filetype
+    endif
+  endfunction
+```
+
 
 # Related
 

@@ -201,17 +201,17 @@ endfunction
 " {{{ DOCX
 autocmd BufReadPost *.do{c,t}{m,x} call s:docx()
 function! s:docx()
-  if executable('pandoc')
-    silent %!pandoc --from=docx --to=markdown %:p:S
-    setlocal fileencoding=utf-8
-    setlocal filetype=markdown
-  elseif executable('docx2txt.pl')
-    silent %!docx2txt.pl -'
-    setlocal filetype=text
-  elseif executable('docx2txt')
+      if executable('docx2txt')
     " python version
     %!docx2txt %:p:S
     setlocal filetype=text
+  elseif executable('docx2txt.pl')
+    silent %!docx2txt.pl -
+    setlocal filetype=text
+  elseif executable('pandoc')
+    silent %!pandoc --from=docx --to=markdown %:p:S
+    setlocal fileencoding=utf-8
+    setlocal filetype=markdown
   elseif executable('tika')
     silent exe '%!tika --encoding=UTF-8 --detect --text ' . expand('%:p:S')
     setlocal fileencoding=utf-8
