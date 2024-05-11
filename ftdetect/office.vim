@@ -420,7 +420,7 @@ if executable('tesseract')
   " and check whether it is in systemlist('tesseract --list-langs').
   " Then pass to tesseract by appending '-l eng' . '+' . lang
   autocmd BufReadPost *.{{jpg,jpeg},png,gif,{tif,tiff},webp,heif,raw,bmp,psd,indd}
-        \ silent exe '%!tesseract ' . get(g:, 'office_tesseract', '') . ' -c debug_file=' . s:nul . ' ' . expand('%:p:S') . ' -' |
+        \ silent exe '%!tesseract ' . get(g:, 'office_tesseract', '') . ' -c debug_file=' . s:nul . ' ' . expand('%:p:S') . ' - 2> ' . s:nul |
         \ setlocal fileencoding=utf-8 |
         \ setlocal filetype=text readonly buftype=nowrite |
         \ let b:undo_ftplugin = exists('b:undo_ftplugin') ? b:undo_ftplugin..'|' : '' .. 'setl readonly< buftype<'
