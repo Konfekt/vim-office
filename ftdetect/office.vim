@@ -403,7 +403,7 @@ if executable('tika')
   autocmd BufReadPost *.{{rar,7z},{class,ja,jar},chm,{mdb,accdb},{pst,msg},mht{,ml}}
         \ silent exe '%!tika --encoding=UTF-8 --detect --text ' . expand('%:p:S') |
         \ setlocal fileencoding=utf-8 |
-        \ setlocal filetype=text readonly buftype=nowrite
+        \ setlocal filetype=text readonly buftype=nowrite |
         \ let b:undo_ftplugin = exists('b:undo_ftplugin') ? b:undo_ftplugin..'|' : '' .. 'setl readonly< buftype<'
 else
   let exts = '*.ja,*.jar'
@@ -422,7 +422,7 @@ if executable('tesseract')
   autocmd BufReadPost *.{{jpg,jpeg},png,gif,{tif,tiff},webp,heif,raw,bmp,psd,indd}
         \ silent exe '%!tesseract ' . get(g:, 'office_tesseract', '') . ' -c debug_file=' . s:nul . ' ' . expand('%:p:S') . ' -' |
         \ setlocal fileencoding=utf-8 |
-        \ setlocal filetype=text readonly buftype=nowrite
+        \ setlocal filetype=text readonly buftype=nowrite |
         \ let b:undo_ftplugin = exists('b:undo_ftplugin') ? b:undo_ftplugin..'|' : '' .. 'setl readonly< buftype<'
 endif
 
