@@ -31,14 +31,14 @@ let g:zipPlugin_ext='*.apk,*.celzip,*.crtx,*.ear,*.gcsx,*.glox,*.gqsx,*.kmz,*.ox
 " {{{ PDF
 autocmd BufReadPost *.pdf call s:pdf()
 function! s:pdf()
-  if executable('pdftohtml') && exists('s:browser')
+  if executable('pdftotext')
+    silent %!pdftotext -enc UTF-8 -nopgbrk -q -- %:p:S -
+    setlocal fileencoding=utf-8
+  elseif executable('pdftohtml') && exists('s:browser')
     silent exe '%!pdftohtml -i -noframes -nodrm -enc UTF-8 -stdout ' . expand('%:p:S') . ' | ' . s:browser
     setlocal fileencoding=utf-8
   elseif executable('pdftotext') && exists('s:browser')
     silent exe '%!pdftotext -htmlmeta -enc UTF-8 -nopgbrk -q -- ' . expand('%:p:S') . ' -' . ' | ' . s:browser
-    setlocal fileencoding=utf-8
-  elseif executable('pdftotext')
-    silent %!pdftotext -enc UTF-8 -nopgbrk -q -- %:p:S -
     setlocal fileencoding=utf-8
   elseif executable('tika') && exists('s:browser')
     silent exe '%!tika --encoding=UTF-8 --detect --html ' . expand('%:p:S') . ' | ' . s:browser
