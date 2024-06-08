@@ -369,7 +369,7 @@ autocmd BufReadPost *.pp{s,t}{x,m} call s:pptx()
 function! s:pptx()
   if executable('pptx2md')
     let output_file = s:tmpdir . s:slash . expand('%:t:r:S') . '.md'
-    silent exe '%!pptx2md --disable-image --disable-wmf --disable-color --disable-escaping ' . expand('%:p:S') . ' -o ' . output_file . ' > ' . s:nul . ' && ' . s:cat . ' ' output_file
+    silent exe '%!pptx2md --disable-image --disable-wmf --disable-color --disable-escaping ' . expand('%:p:S') . ' -o ' . output_file . ' 2> ' . s:nul . ' && ' . s:cat . ' ' output_file
     setlocal filetype=markdown foldmethod=expr foldexpr=MarkdownFold()
     let b:undo_ftplugin = exists('b:undo_ftplugin') ? b:undo_ftplugin..'|' : '' .. 'setl fdm< fde<'
   elseif executable('tika') && exists('s:browser')
