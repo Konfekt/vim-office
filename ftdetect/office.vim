@@ -40,6 +40,8 @@ function! s:pdf()
   elseif executable('pdftotext') && exists('s:browser')
     silent exe '%!pdftotext -htmlmeta -enc UTF-8 -nopgbrk -q -- ' . expand('%:p:S') . ' -' . ' | ' . s:browser
     setlocal fileencoding=utf-8
+  elseif executable('markitdown')
+    silent %!markitdown %:p:S
   elseif executable('tika') && exists('s:browser')
     silent exe '%!tika --encoding=UTF-8 --detect --html ' . expand('%:p:S') . ' | ' . s:browser
     setlocal fileencoding=utf-8
@@ -220,6 +222,8 @@ function! s:docx()
     silent %!pandoc --from=docx --to=markdown %:p:S
     setlocal fileencoding=utf-8
     setlocal filetype=markdown
+  elseif executable('markitdown')
+    silent %!markitdown %:p:S
   elseif executable('tika')
     silent exe '%!tika --encoding=UTF-8 --detect --text ' . expand('%:p:S')
     setlocal fileencoding=utf-8
@@ -297,6 +301,8 @@ function! s:xlsx()
     setlocal tabstop=8 nowrap list listchars=eol:\ ,tab:»-
     " mute error message
     setlocal filetype=tsv
+  elseif executable('markitdown')
+    silent %!markitdown %:p:S
   elseif executable('xlscat')
     silent exe '%!xlscat -S all -e ' . &encoding . ' %:p:S'
     " take account of unicode homoglyph │ instead of |
@@ -372,6 +378,8 @@ function! s:pptx()
     silent exe '%!pptx2md --disable-image --disable-wmf --disable-color --disable-escaping ' . expand('%:p:S') . ' -o ' . output_file . ' 2> ' . s:nul . ' && ' . s:cat . ' ' output_file
     setlocal filetype=markdown foldmethod=expr foldexpr=MarkdownFold()
     let b:undo_ftplugin = exists('b:undo_ftplugin') ? b:undo_ftplugin..'|' : '' .. 'setl fdm< fde<'
+  elseif executable('markitdown')
+    silent %!markitdown %:p:S
   elseif executable('tika') && exists('s:browser')
     silent exe '%!tika --encoding=UTF-8 --detect --html ' . expand('%:p:S') . ' | ' . s:browser
     setlocal fileencoding=utf-8
