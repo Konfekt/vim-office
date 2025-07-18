@@ -189,7 +189,8 @@ endfunction
 autocmd BufReadPost *.doc call s:doc()
 function! s:doc()
   if executable('wvText')
-    silent %!wvText %:p:S
+    let output_file = s:tmpdir . s:slash . expand('%:t:r:S') . '.txt'
+    silent exe '%!wvText' expand('%:p:S') output_file '&&' s:cat output_file
   elseif executable('wvHtml') && exists('s:browser')
     silent exe '%!wvText ' . expand('%:p:S') . ' | ' . s:browser
   elseif executable('tika')
