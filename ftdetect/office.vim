@@ -212,7 +212,10 @@ endfunction
 " {{{ DOCX
 autocmd BufReadPost *.do{c,t}{m,x} call s:docx()
 function! s:docx()
-      if executable('docx2txt')
+  if executable('doxx')
+    %!doxx --export markdown %:p:S
+    setlocal filetype=markdown
+  elseif executable('docx2txt')
     " python version
     %!docx2txt %:p:S
     setlocal filetype=text
