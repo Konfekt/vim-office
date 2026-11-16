@@ -96,7 +96,7 @@ run `:PandocToMarkdown` inside the buffer of the opened file:
 >
   command! -range=% PandocToMarkdown exe
   \ '<line1>,<line2>!pandoc --wrap=preserve --from='
-  \ ..PandocFiletype(&l:filetype)..'--to markdown %:S'
+  \ ..PandocFiletype(&l:filetype)..' --to markdown %:S'
   function! PandocFiletype(filetype) abort
     if a:filetype ==# 'tex'
       return 'latex'
@@ -108,6 +108,6 @@ run `:PandocToMarkdown` inside the buffer of the opened file:
       return a:filetype
     endif
   endfunction
->
+<
 
 vim:tw=78:ts=2:sts=2:sw=2:ft=help:norl
