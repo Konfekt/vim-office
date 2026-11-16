@@ -119,9 +119,14 @@ endfunction
 
 " Make the buffer a read-only view, after setting its filetype to a:1 (if given)
 " so that its ftplugin does not undo this.
+" A buffer still without filetype becomes 'text': otherwise a fallback in the
+" filetype detection that runs later (such as 'conf' for a first line starting
+" with #) would set one and its ftplugin would undo the read-only view.
 function! s:view(...) abort
   if a:0 > 0 && !empty(a:1)
     execute 'setlocal filetype=' . a:1
+  elseif empty(&l:filetype)
+    setlocal filetype=text
   endif
   setlocal readonly buftype=nowrite
   call s:undo('setl readonly< buftype<' . (a:0 > 1 ? ' ' . a:2 : ''))
@@ -135,6 +140,7 @@ endfunction
 
 " {{{ PDF
 function! office#pdf() abort
+  let ft = 'text'
   if executable('pdftotext')
     call s:filter('pdftotext -enc UTF-8 -nopgbrk -q -- ' . s:file() . ' -')
     setlocal fileencoding=utf-8
@@ -143,12 +149,13 @@ function! office#pdf() abort
     setlocal fileencoding=utf-8
   elseif executable('markitdown')
     call s:filter('markitdown ' . s:file())
+    let ft = 'markdown'
   elseif executable('tika') && s:has_browser()
     call s:tika('html')
   elseif executable('tika')
     call s:tika('text')
   endif
-  call s:view('text')
+  call s:view(ft)
 endfunction
 " }}}
 
@@ -302,6 +309,7 @@ function! office#docx() abort
     setlocal filetype=markdown
   elseif executable('markitdown')
     call s:filter('markitdown ' . s:file())
+    setlocal filetype=markdown
   elseif executable('tika')
     call s:tika('text')
     setlocal filetype=text
@@ -336,6 +344,7 @@ function! office#xls() abort
   elseif executable('in2csv')
     call s:filter('in2csv -f xls ' . s:file())
     call s:easyalign('*,')
+    setlocal filetype=csv
   elseif executable('excel2csv')
     call s:filter('excel2csv --trim ' . s:file())
     call s:easyalign('*,')
@@ -370,6 +379,7 @@ function! office#xlsx() abort
     setlocal filetype=tsv
   elseif executable('markitdown')
     call s:filter('markitdown ' . s:file())
+    setlocal filetype=markdown
   elseif executable('xlscat')
     call s:filter('xlscat -S all -e ' . &encoding . ' ' . s:file())
     " take account of unicode homoglyph │ instead of |
@@ -377,6 +387,7 @@ function! office#xlsx() abort
   elseif executable('in2csv')
     call s:filter('in2csv -f xlsx ' . s:file())
     call s:easyalign('*,')
+    setlocal filetype=csv
   elseif executable('excel2csv')
     call s:filter('excel2csv ' . s:file())
     call s:easyalign('*,')
@@ -434,6 +445,7 @@ function! office#pptx() abort
     call s:undo('setl fdm< fde<')
   elseif executable('markitdown')
     call s:filter('markitdown ' . s:file())
+    setlocal filetype=markdown
   elseif executable('tika') && s:has_browser()
     call s:tika('html')
     setlocal filetype=text

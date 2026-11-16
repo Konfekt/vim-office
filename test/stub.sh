@@ -27,6 +27,9 @@ case $name in
       case $arg in --targetdir=*) dir=${arg#--targetdir=} ;; esac
     done
     printf '<p>STUB wvHtml</p>\n' > "$dir/$out" ;;
+  markitdown)
+    # Markdown, whose leading # made Vim detect the filetype 'conf'.
+    printf '## STUB markitdown %s\n' "$*" ;;
   lynx)
     # Like lynx -stdin: read the HTML from standard input, ignore any file argument.
     sed 's/<[^>]*>//g' ;;
