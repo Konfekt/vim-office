@@ -193,6 +193,30 @@ function! Test_xlsx_keeps_global_fileformat() abort
   call s:Check(&l:fileformat ==# 'unix', 'local fileformat is ' . &l:fileformat)
 endfunction
 
+" Converter output without filetype, such as Markdown starting with #, got
+" the filetype 'conf' from the fallback detection, which undid the read-only view.
+function! Test_markitdown_xlsx_stays_readonly() abort
+  call s:Tools('markitdown')
+  call s:Start()
+  call s:Match(s:Open(s:File('a.xlsx', 'raw')), '^## STUB markitdown')
+  call s:ReadOnlyView('markdown')
+endfunction
+
+function! Test_markitdown_pdf_is_markdown() abort
+  call s:Tools('markitdown')
+  call s:Start()
+  call s:Match(s:Open(s:File('a.pdf', 'raw')), '^## STUB markitdown')
+  call s:ReadOnlyView('markdown')
+endfunction
+
+" Any other output without filetype becomes 'text'.
+function! Test_xlsx_tika_html_is_text() abort
+  call s:Tools('tika', 'lynx')
+  call s:Start()
+  call s:Open(s:File('a.xlsx', 'raw'))
+  call s:ReadOnlyView('text')
+endfunction
+
 " Unchanged behavior {{{1
 
 function! Test_disabled_by_loaded_office() abort

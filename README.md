@@ -65,7 +65,10 @@ To convert a file to markdown, add the following command to your `vimrc` and run
 ```vim
   command! -range=% PandocToMarkdown exe '<line1>,<line2>!pandoc --wrap=preserve --from='..PandocFiletype(&l:filetype)..' --to markdown %:S'
   function! PandocFiletype(filetype) abort
-    if a:filetype ==# 'tex'
+    if &l:buftype ==# 'nowrite'
+      " a document converted by vim-office: pandoc reads the original file
+      return expand('%:e')
+    elseif a:filetype ==# 'tex'
       return 'latex'
     elseif a:filetype ==# 'pandoc'
       return 'markdown'
